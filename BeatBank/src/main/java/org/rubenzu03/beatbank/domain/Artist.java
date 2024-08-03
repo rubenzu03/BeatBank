@@ -7,8 +7,10 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.rubenzu03.beatbank.dto.ArtistDTO;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "Artists")
@@ -27,6 +29,9 @@ public class Artist {
     @OneToMany
     private List<Album> albums;
 
+    @OneToMany
+    private List<ArtistsInSong> artistsInSong;
+
     public Artist(ArtistDTO artistDTO) {
         this.name = artistDTO.getName();
         this.country = artistDTO.getCountry();
@@ -42,12 +47,15 @@ public class Artist {
         albums.removeIf(album -> album.getId().equals(albumId));
     }
 
-    public void updateArtist(ArtistDTO artistDTO) {
-        this.name = artistDTO.getName();
-        this.country = artistDTO.getCountry();
-        this.description = artistDTO.getDescription();
-        this.birthDate = artistDTO.getBirthDate();
+    public void addArtistsInSong(ArtistsInSong artistsInSong) {
+        this.artistsInSong.add(artistsInSong);
     }
+
+    public void removeArtistsInSong(String artistsInSongId) {
+        artistsInSong.removeIf(artistsInSong -> artistsInSong.getId().equals(artistsInSongId));
+    }
+
+
 
 
 }
