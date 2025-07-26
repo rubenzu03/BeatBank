@@ -15,4 +15,13 @@ public class ArtistDto implements Serializable {
     String name;
     List<SongDto> songs;
     String description;
+
+    public ArtistDto(Artist artist){
+        this.id = artist.getId();
+        this.name = artist.getName();
+        this.description = artist.getDescription();
+        this.songs = artist.getSongs() == null ? null : artist.getSongs().stream()
+            .map(SongDto::new)
+            .toList();
+    }
 }

@@ -49,7 +49,7 @@ public class SongService {
     public SongDto addArtistToSong(Long id, @RequestBody ArtistDto artistDto){
         Song song = songRepository.findSongById(id);
         Artist artist = new Artist(artistDto);
-        song.addArtist(artist);
+        song.addArtist(new ArtistDto(artist));
         songRepository.save(song);
         return new SongDto(song);
     }

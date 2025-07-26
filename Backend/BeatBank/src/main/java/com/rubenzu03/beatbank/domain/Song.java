@@ -1,5 +1,6 @@
 package com.rubenzu03.beatbank.domain;
 
+import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,17 +33,29 @@ public class Song {
         this.name = songDto.name();
         this.duration = songDto.duration();
         this.album = songDto.album();
-        this.artists = songDto.artists();
+        if (songDto.artists() != null) {
+            this.artists = songDto.artists().stream()
+                .map(Artist::new)
+                .toList();
+        } else {
+            this.artists = null;
+        }
     }
 
     public void updateSong(SongDto songDto) {
         this.name = songDto.name();
         this.duration = songDto.duration();
         this.album = songDto.album();
-        this.artists = songDto.artists();
+        if (songDto.artists() != null) {
+            this.artists = songDto.artists().stream()
+                .map(Artist::new)
+                .toList();
+        } else {
+            this.artists = null;
+        }
     }
 
-    public void addArtist(Artist artist){
-        this.artists.add(artist);
+    public void addArtist(ArtistDto artist){
+        this.artists.add(new Artist(artist));
     }
 }
