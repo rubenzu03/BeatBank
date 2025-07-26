@@ -33,5 +33,12 @@ public class SongService {
         return new SongDto(song);
     }
 
+    public SongDto updateSong(Long id, SongDto songDto){
+        Song song = songRepository.findById(id).get();
+        song.updateSong(songDto);
+        //songRepository.save(song);
+        return new SongDto(song);
+    }
+
 
 }

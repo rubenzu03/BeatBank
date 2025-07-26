@@ -34,4 +34,11 @@ public class Song {
         this.album = songDto.album();
         this.artists = songDto.artists();
     }
+
+    public void updateSong(SongDto songDto) {
+        this.name = songDto.name();
+        this.duration = songDto.duration();
+        this.album = songDto.album();
+        this.artists = songDto.artists();
+    }
 }
