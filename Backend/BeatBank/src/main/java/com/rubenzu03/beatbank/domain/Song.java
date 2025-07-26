@@ -1,5 +1,6 @@
 package com.rubenzu03.beatbank.domain;
 
+import com.rubenzu03.beatbank.SongDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,11 @@ public class Song {
 
     @ManyToMany
     private List<Artist> artists;
+
+    public Song(SongDto songDto){
+        this.name = songDto.name();
+        this.duration = songDto.duration();
+        this.album = songDto.album();
+        this.artists = songDto.artists();
+    }
 }
