@@ -26,7 +26,11 @@ public class SongRestController {
         return songService.getAllSongs();
     }
 
-//    @GetMapping("/songs/{id}")
+    @GetMapping("/songs/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public SongDto getSongById(@PathVariable Long id){
+        return songService.getSongById(id);
+    }
 
 
     @PostMapping("/songs")
