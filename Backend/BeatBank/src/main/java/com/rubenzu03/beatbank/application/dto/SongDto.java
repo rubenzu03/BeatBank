@@ -1,4 +1,4 @@
-package com.rubenzu03.beatbank;
+package com.rubenzu03.beatbank.application.dto;
 
 import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.domain.Album;

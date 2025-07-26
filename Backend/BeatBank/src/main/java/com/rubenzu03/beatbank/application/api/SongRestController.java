@@ -1,7 +1,10 @@
 package com.rubenzu03.beatbank.application.api;
 
-import com.rubenzu03.beatbank.SongDto;
 import com.rubenzu03.beatbank.application.SongService;
+import com.rubenzu03.beatbank.application.dto.AlbumDto;
+import com.rubenzu03.beatbank.application.dto.ArtistDto;
+import com.rubenzu03.beatbank.application.dto.SongDto;
+import com.rubenzu03.beatbank.domain.Artist;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +26,7 @@ public class SongRestController {
         return songService.getAllSongs();
     }
 
-    @GetMapping("/songs/{id}")
+//    @GetMapping("/songs/{id}")
 
 
     @PostMapping("/songs")
@@ -38,6 +41,11 @@ public class SongRestController {
     public SongDto updateSong(@PathVariable Long id, @RequestBody SongDto songDto){
         return songService.updateSong(id, songDto);
     }
+
+
+    /*public SongDto addArtistToSong(@PathVariable Long id, @RequestBody ArtistDto artistDto){
+        //return songService
+    }*/
 
 
 }

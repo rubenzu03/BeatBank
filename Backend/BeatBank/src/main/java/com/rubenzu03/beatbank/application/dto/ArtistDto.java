@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank.application.dto;
 
-import com.rubenzu03.beatbank.SongDto;
 import com.rubenzu03.beatbank.domain.Artist;
 import lombok.Value;
 

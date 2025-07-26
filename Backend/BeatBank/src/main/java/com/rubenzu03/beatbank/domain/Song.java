@@ -1,6 +1,6 @@
 package com.rubenzu03.beatbank.domain;
 
-import com.rubenzu03.beatbank.SongDto;
+import com.rubenzu03.beatbank.application.dto.SongDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,5 +40,9 @@ public class Song {
         this.duration = songDto.duration();
         this.album = songDto.album();
         this.artists = songDto.artists();
+    }
+
+    public void addArtist(Artist artist){
+        this.artists.add(artist);
     }
 }

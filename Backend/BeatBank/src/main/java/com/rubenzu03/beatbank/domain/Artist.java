@@ -1,5 +1,6 @@
 package com.rubenzu03.beatbank.domain;
 
+import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,17 @@ public class Artist {
     private List<Song> songs;
 
     private String description;
+
+    public Artist (ArtistDto artistDto){
+        this.id = artistDto.getId();
+        this.name = artistDto.getName();
+        this.description = artistDto.getDescription();
+        if (artistDto.getSongs() != null) {
+            this.songs = artistDto.getSongs().stream()
+                .map(Song::new)
+                .toList();
+        } else {
+            this.songs = null;
+        }
+    }
 }
