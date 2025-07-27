@@ -5,6 +5,7 @@ import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.domain.Artist;
+import jakarta.el.MethodNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class SongRestController {
         return songService.getSongById(id);
     }
 
-
+    @Transactional
     @PostMapping("/songs")
     @ResponseStatus(HttpStatus.CREATED)
     public SongDto createSong(@RequestBody SongDto songDto){
@@ -46,10 +47,12 @@ public class SongRestController {
         return songService.updateSong(id, songDto);
     }
 
-
-    /*public SongDto addArtistToSong(@PathVariable Long id, @RequestBody ArtistDto artistDto){
-        //return songService
-    }*/
+    @Transactional
+    @PutMapping("/songs/{id}/artists")
+    @ResponseStatus(HttpStatus.OK)
+    public SongDto addArtistToSong(@PathVariable Long id, @RequestBody ArtistDto artistDto){
+        return songService.addArtistToSong(id,artistDto);
+    }
 
 
 }
