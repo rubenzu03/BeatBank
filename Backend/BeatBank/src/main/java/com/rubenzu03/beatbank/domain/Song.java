@@ -32,7 +32,11 @@ public class Song {
     public Song(SongDto songDto){
         this.name = songDto.name();
         this.duration = songDto.duration();
-        this.album = songDto.album();
+        if (songDto.album() != null) {
+            this.album = new Album(songDto.album());
+        } else {
+            this.album = null;
+        }
         if (songDto.artists() != null) {
             this.artists = songDto.artists().stream()
                 .map(Artist::new)
@@ -45,13 +49,22 @@ public class Song {
     public void updateSong(SongDto songDto) {
         this.name = songDto.name();
         this.duration = songDto.duration();
-        this.album = songDto.album();
+        handleAlbum(songDto);
         if (songDto.artists() != null) {
             this.artists = songDto.artists().stream()
                 .map(Artist::new)
                 .toList();
         } else {
             this.artists = null;
+        }
+    }
+
+    private void handleAlbum(SongDto songDto) {
+        if (songDto.album() != null) {
+            this.album = new Album(songDto.album());
+        }
+        else{
+            this.album = null;
         }
     }
 
