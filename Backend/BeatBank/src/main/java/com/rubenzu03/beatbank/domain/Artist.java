@@ -36,4 +36,12 @@ public class Artist {
             this.songs = null;
         }
     }
+
+    public void addSong(Song song) {
+        if (this.songs == null) {
+            this.songs = List.of(song);
+        } else {
+            this.songs.add(song);
+        }
+    }
 }
