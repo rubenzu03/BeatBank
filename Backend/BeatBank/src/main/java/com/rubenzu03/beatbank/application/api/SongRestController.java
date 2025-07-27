@@ -46,6 +46,12 @@ public class SongRestController {
     public SongDto updateSong(@PathVariable Long id, @RequestBody SongDto songDto){
         return songService.updateSong(id, songDto);
     }
+    
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteSongById(@RequestParam Long id) {
+        songService.deleteSongById(id);
+    }
 
     @Transactional
     @PostMapping("/songs/{id}/artists")

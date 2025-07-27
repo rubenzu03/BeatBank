@@ -46,6 +46,14 @@ public class SongService {
         return new SongDto(song);
     }
 
+    public void deleteSongById(Long id) {
+        if (songRepository.existsById(id)) {
+            songRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException("Song with id " + id + " does not exist.");
+        }
+    }
+
     public SongDto addArtistToSong(Long id, @RequestBody ArtistDto artistDto){
         Song song = songRepository.findSongById(id);
         Artist artist = new Artist(artistDto);
