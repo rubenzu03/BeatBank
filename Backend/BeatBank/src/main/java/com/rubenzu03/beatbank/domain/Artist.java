@@ -25,11 +25,11 @@ public class Artist {
     private String description;
 
     public Artist (ArtistDto artistDto){
-        this.id = artistDto.getId();
-        this.name = artistDto.getName();
-        this.description = artistDto.getDescription();
-        if (artistDto.getSongs() != null) {
-            this.songs = artistDto.getSongs().stream()
+        this.id = artistDto.id();
+        this.name = artistDto.name();
+        this.description = artistDto.description();
+        if (artistDto.songs() != null) {
+            this.songs = artistDto.songs().stream()
                 .map(Song::new)
                 .toList();
         } else {
