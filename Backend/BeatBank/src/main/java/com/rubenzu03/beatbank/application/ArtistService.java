@@ -29,8 +29,10 @@ public class ArtistService {
                 .orElse(null);
     }
 
-    public void createArtist(ArtistDto artistDto){
-        artistRepository.save(new Artist(artistDto));
+    public ArtistDto createArtist(ArtistDto artistDto){
+        Artist artist = new Artist(artistDto);
+        artistRepository.save(artist);
+        return new ArtistDto(artist);
     }
 
     public void deleteArtistById(Long id) {
