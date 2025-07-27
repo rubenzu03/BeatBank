@@ -1,10 +1,12 @@
 package com.rubenzu03.beatbank.domain;
 
+import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -26,5 +28,20 @@ public class Album {
 
     @OneToMany
     private List<Song> songs;
+
+    public Album(AlbumDto albumDto) {
+        this.name = albumDto.name();
+        this.releaseDate = albumDto.releaseDate();
+        this.coverImageUrl = albumDto.coverImageUrl();
+        this.genre = albumDto.genre();
+        this.description = albumDto.description();
+        if (albumDto.songs() != null) {
+            this.songs = albumDto.songs().stream()
+                    .map(Song::new)
+                    .toList();
+        } else {
+            this.songs = null;
+        }
+    }
 
 }
