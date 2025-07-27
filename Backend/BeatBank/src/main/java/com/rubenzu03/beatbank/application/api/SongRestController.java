@@ -48,7 +48,7 @@ public class SongRestController {
     }
 
     @Transactional
-    @PutMapping("/songs/{id}/artists")
+    @PostMapping("/songs/{id}/artists")
     @ResponseStatus(HttpStatus.OK)
     public SongDto addArtistToSong(@PathVariable Long id, @RequestBody ArtistDto artistDto){
         return songService.addArtistToSong(id,artistDto);
