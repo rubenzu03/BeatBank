@@ -35,7 +35,6 @@ public class Album {
         this.coverImageUrl = albumDto.coverImageUrl();
         this.genre = albumDto.genre();
         this.description = albumDto.description();
-        // No se debe reconstruir Song desde SongDtoSimple, solo asignar null o dejar vacío
         this.songs = null;
     }
 
