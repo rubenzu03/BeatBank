@@ -29,7 +29,6 @@ public class Artist {
         this.id = artistDto.id();
         this.name = artistDto.name();
         this.description = artistDto.description();
-        // No se debe reconstruir Song desde SongDtoSimple, solo asignar null o dejar vacío
         this.songs = null;
     }
 
