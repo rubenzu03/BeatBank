@@ -35,13 +35,8 @@ public class Album {
         this.coverImageUrl = albumDto.coverImageUrl();
         this.genre = albumDto.genre();
         this.description = albumDto.description();
-        if (albumDto.songs() != null) {
-            this.songs = albumDto.songs().stream()
-                    .map(Song::new)
-                    .toList();
-        } else {
-            this.songs = null;
-        }
+        // No se debe reconstruir Song desde SongDtoSimple, solo asignar null o dejar vacío
+        this.songs = null;
     }
 
 }

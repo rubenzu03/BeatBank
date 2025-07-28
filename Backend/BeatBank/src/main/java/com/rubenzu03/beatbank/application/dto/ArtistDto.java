@@ -8,13 +8,13 @@ import java.util.List;
 /**
  * DTO for {@link Artist}
  */
-public record ArtistDto(Long id, String name, List<SongDto> songs, String description) implements Serializable {
+public record ArtistDto(Long id, String name, List<SongDtoSimple> songs, String description) implements Serializable {
     public ArtistDto(Artist artist){
         this(
             artist.getId(),
             artist.getName(),
             artist.getSongs() == null ? null : artist.getSongs().stream()
-                .map(SongDto::new)
+                .map(SongDtoSimple::new)
                 .toList(),
             artist.getDescription()
         );

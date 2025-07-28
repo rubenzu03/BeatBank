@@ -1,5 +1,6 @@
 package com.rubenzu03.beatbank.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import jakarta.persistence.*;
@@ -26,46 +27,35 @@ public class Song {
     @JoinColumn
     private Album album;
 
+    @JsonBackReference
     @ManyToMany
     private List<Artist> artists;
 
     public Song(SongDto songDto){
         this.name = songDto.name();
         this.duration = songDto.duration();
+        // Solo asignar el id del álbum si existe, sin reconstruir la entidad
         if (songDto.album() != null) {
-            this.album = new Album(songDto.album());
+            this.album = new Album();
+            this.album.setId(songDto.album().id());
         } else {
             this.album = null;
         }
-        if (songDto.artists() != null) {
-            this.artists = songDto.artists().stream()
-                .map(Artist::new)
-                .toList();
-        } else {
-            this.artists = null;
-        }
+        // No se debe reconstruir Artist desde ArtistDtoSimple, solo asignar null o dejar vacío
+        this.artists = null;
     }
 
     public void updateSong(SongDto songDto) {
         this.name = songDto.name();
         this.duration = songDto.duration();
-        handleAlbum(songDto);
-        if (songDto.artists() != null) {
-            this.artists = songDto.artists().stream()
-                .map(Artist::new)
-                .toList();
-        } else {
-            this.artists = null;
-        }
-    }
-
-    private void handleAlbum(SongDto songDto) {
         if (songDto.album() != null) {
-            this.album = new Album(songDto.album());
-        }
-        else{
+            this.album = new Album();
+            this.album.setId(songDto.album().id());
+        } else {
             this.album = null;
         }
+        // No se debe reconstruir Artist desde ArtistDtoSimple, solo asignar null o dejar vacío
+        this.artists = null;
     }
 
     public void addArtist(ArtistDto artist){

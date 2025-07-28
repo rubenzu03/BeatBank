@@ -1,5 +1,6 @@
 package com.rubenzu03.beatbank.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,23 +19,18 @@ public class Artist {
     @Column(nullable = false)
     private Long id;
     private String name;
+    private String description;
 
+    @JsonManagedReference
     @ManyToMany(mappedBy = "artists")
     private List<Song> songs;
-
-    private String description;
 
     public Artist (ArtistDto artistDto){
         this.id = artistDto.id();
         this.name = artistDto.name();
         this.description = artistDto.description();
-        if (artistDto.songs() != null) {
-            this.songs = artistDto.songs().stream()
-                .map(Song::new)
-                .toList();
-        } else {
-            this.songs = null;
-        }
+        // No se debe reconstruir Song desde SongDtoSimple, solo asignar null o dejar vacío
+        this.songs = null;
     }
 
     public void addSong(Song song) {
