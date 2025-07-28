@@ -5,6 +5,7 @@ import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.domain.Artist;
 import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.persistence.AlbumRepository;
+import com.rubenzu03.beatbank.persistence.ArtistRepository;
 import com.rubenzu03.beatbank.persistence.SongRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 public class SongService {
 
     private final SongRepository songRepository;
+    private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
 
-    public SongService(SongRepository songRepository, AlbumRepository albumRepository) {
+    public SongService(SongRepository songRepository, ArtistRepository artistRepository, AlbumRepository albumRepository) {
         this.songRepository = songRepository;
+        this.artistRepository = artistRepository;
         this.albumRepository = albumRepository;
     }
 
@@ -64,4 +67,17 @@ public class SongService {
     }
 
 
+    public void deleteArtistFromSong(Long songId, Long artistId) {
+        Song song = songRepository.findSongById(songId);
+        Artist artist = artistRepository.findById(artistId).orElseThrow(() -> new IllegalArgumentException("Artist not found"));
+
+        if (song.getArtists().contains(artist)) {
+            song.getArtists().remove(artist);
+            artist.getSongs().remove(song);
+            songRepository.save(song);
+            artistRepository.save(artist);
+        } else {
+            throw new IllegalArgumentException("Artist not associated with this song");
+        }
+    }
 }

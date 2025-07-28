@@ -60,5 +60,12 @@ public class SongRestController {
         return songService.addArtistToSong(id,artistDto);
     }
 
+    @Transactional
+    @DeleteMapping("/songs/{id}/artists/{artistId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteArtistFromSong(@PathVariable Long id, @PathVariable Long artistId) {
+        songService.deleteArtistFromSong(id, artistId);
+    }
+
 
 }
