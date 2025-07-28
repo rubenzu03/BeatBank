@@ -34,14 +34,12 @@ public class Song {
     public Song(SongDto songDto){
         this.name = songDto.name();
         this.duration = songDto.duration();
-        // Solo asignar el id del álbum si existe, sin reconstruir la entidad
         if (songDto.album() != null) {
             this.album = new Album();
             this.album.setId(songDto.album().id());
         } else {
             this.album = null;
         }
-        // No se debe reconstruir Artist desde ArtistDtoSimple, solo asignar null o dejar vacío
         this.artists = null;
     }
 
