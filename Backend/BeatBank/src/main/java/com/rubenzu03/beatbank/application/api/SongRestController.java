@@ -9,6 +9,7 @@ import jakarta.el.MethodNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,7 +31,11 @@ public class SongRestController {
     @GetMapping("/songs/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SongDto getSongById(@PathVariable Long id){
-        return songService.getSongById(id);
+        SongDto song = songService.getSongById(id);
+        if (song == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Song not found");
+        }
+        return song;
     }
 
     @Transactional

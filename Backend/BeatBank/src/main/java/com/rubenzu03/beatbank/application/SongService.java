@@ -33,6 +33,9 @@ public class SongService {
 
     public SongDto getSongById(Long id) {
         Song song = songRepository.findSongById(id);
+        if (song == null) {
+            return null;
+        }
         return new SongDto(song);
     }
 
