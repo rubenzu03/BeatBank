@@ -23,17 +23,19 @@ public class Song {
 
     private String duration; // Duration in format HH:MM:SS
 
+    private Long plays;
+
     @ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn
     private Album album;
 
-    @JsonBackReference
     @ManyToMany
     private List<Artist> artists;
 
     public Song(SongDto songDto){
         this.name = songDto.name();
         this.duration = songDto.duration();
+        this.plays = songDto.plays() != null ? songDto.plays() : 0L;
         if (songDto.album() != null) {
             this.album = new Album();
             this.album.setId(songDto.album().id());
@@ -52,7 +54,7 @@ public class Song {
         } else {
             this.album = null;
         }
-        // No se debe reconstruir Artist desde ArtistDtoSimple, solo asignar null o dejar vacío
+        this.plays = songDto.plays() != null ? songDto.plays() : 0L;
         this.artists = null;
     }
 
