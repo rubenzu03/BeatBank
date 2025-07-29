@@ -32,7 +32,7 @@ public class Song {
     @ManyToMany
     private List<Artist> artists;
 
-    public Song(SongDto songDto){
+    public Song(SongDto songDto) {
         this.name = songDto.name();
         this.duration = songDto.duration();
         this.plays = songDto.plays() != null ? songDto.plays() : 0L;
@@ -58,7 +58,15 @@ public class Song {
         this.artists = null;
     }
 
-    public void addArtist(ArtistDto artist){
+    public void addArtist(ArtistDto artist) {
         this.artists.add(new Artist(artist));
+    }
+
+    public void setGenre(Genre genre) {
+        if (this.album != null) {
+            this.album.setGenre(genre);
+        } else {
+            throw new IllegalStateException("Cannot set genre for a song without an album");
+        }
     }
 }
