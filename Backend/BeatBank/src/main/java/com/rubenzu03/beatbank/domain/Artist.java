@@ -21,7 +21,6 @@ public class Artist {
     private String name;
     private String description;
 
-    @JsonManagedReference
     @ManyToMany(mappedBy = "artists")
     private List<Song> songs;
 
