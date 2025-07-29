@@ -29,7 +29,7 @@ public class Album {
     @ManyToOne
     private Genre genre;
 
-    @OneToMany
+    @OneToMany (mappedBy = "album", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Song> songs;
 
     public Album(AlbumDto albumDto) {
