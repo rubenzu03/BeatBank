@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +48,9 @@ public class SongService {
 
     public SongDto updateSong(Long id, SongDto songDto) {
         Song song = songRepository.findById(id).get();
+        if (!Objects.equals(song.getId(), id)) {
+            return null;
+        }
         song.updateSong(songDto);
         songRepository.save(song);
         return new SongDto(song);
