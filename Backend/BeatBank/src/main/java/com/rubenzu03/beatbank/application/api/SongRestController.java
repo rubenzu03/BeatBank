@@ -4,6 +4,7 @@ import com.rubenzu03.beatbank.application.SongService;
 import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
+import com.rubenzu03.beatbank.application.exception.SongNotFoundException;
 import com.rubenzu03.beatbank.domain.Artist;
 import jakarta.el.MethodNotFoundException;
 import jakarta.transaction.Transactional;
@@ -33,7 +34,7 @@ public class SongRestController {
     public SongDto getSongById(@PathVariable Long id){
         SongDto song = songService.getSongById(id);
         if (song == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Song not found");
+            throw new SongNotFoundException(HttpStatus.NOT_FOUND, "Song not found");
         }
         return song;
     }
