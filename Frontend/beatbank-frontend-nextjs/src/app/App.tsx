@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import SongItem, { Song, Artist } from './SongItem';
+import SongItem, { Song, Artist } from '../components/SongItem';
 
 
 function App() {

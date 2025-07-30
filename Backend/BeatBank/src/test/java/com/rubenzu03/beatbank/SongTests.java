@@ -88,4 +88,16 @@ public class SongTests {
                 .andExpect(jsonPath("$.duration").value("3:45"));
     }
 
+    @Test
+    @Order(6)
+    void testCreateSongWithInvalidData() throws Exception {
+        String invalidSongJson = "{ \"name\": \"\", \"duration\": \"\" }";
+
+        mockMvc.perform(post("/songs")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidSongJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Invalid song data"));
+    }
+
 }
