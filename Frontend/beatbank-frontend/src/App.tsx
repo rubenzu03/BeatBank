@@ -1,16 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import SongItem, { Song, Artist } from './SongItem';
 
-interface Artist {
-  id: number;
-  name: string;
-}
-
-interface Song {
-  id: number;
-  name: string;
-  artists: Artist[] | string;
-}
 
 function App() {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -31,11 +22,7 @@ function App() {
         <h1>Song List</h1>
         <ul>
           {songs.map(song => (
-            <li key={song.id}>
-              {song.name} by {Array.isArray(song.artists)
-                ? song.artists.map(artist => (typeof artist === 'string' ? artist : artist.name)).join(', ')
-                : song.artists}
-            </li>
+            <SongItem key={song.id} song={song} />
           ))}
         </ul>
       </header>
