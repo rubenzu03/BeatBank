@@ -1,31 +1,35 @@
 
 "use client";
-import React, { useState, useEffect } from "react";
-import SongItem, { Song } from "../components/SongItem";
+
+import React from "react";
+import Link from "next/link";
 
 export default function Home() {
-  const [songs, setSongs] = useState<Song[]>([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/songs")
-      .then((response) => response.json())
-      .then((songs: Song[]) => {
-        console.log("API Response:", songs);
-        setSongs(songs);
-      })
-      .catch((error) => console.error("Error fetching songs:", error));
-  }, []);
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-8">
-      <header className="w-full max-w-2xl bg-white rounded-lg shadow p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Song List</h1>
-        <ul className="space-y-2">
-          {songs.map((song) => (
-            <SongItem key={song.id} song={song} />
-          ))}
-        </ul>
-      </header>
-    </div>
+    <main className="landing-main">
+      <section className="landing-section">
+        <img src="/logo.svg" alt="BeatBank Logo" className="landing-logo" />
+        <h1 className="landing-title">Welcome to BeatBank</h1>
+        <p className="landing-description">
+          Manage songs, artists, albums and genres in a simple way.
+        </p>
+        <div className="landing-buttons">
+          <Link href="/allSongs" className="landing-btn landing-btn-explorar">
+            All songs
+          </Link>
+          <Link href="/search" className="landing-btn landing-btn-login">
+            Search
+          </Link>
+          <Link href="/explore" className="landing-btn landing-btn-register">
+            Explore
+          </Link>
+        </div>
+        <div className="landing-info">
+          <h2>
+            {/* In BeatBank, you can manage your music library, and discover new songs. */}
+          </h2>
+        </div>
+      </section>
+    </main>
   );
 }
