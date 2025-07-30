@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class SongRestController {
 
     private final SongService songService;
