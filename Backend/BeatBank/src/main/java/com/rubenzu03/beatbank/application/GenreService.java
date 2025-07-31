@@ -2,6 +2,7 @@ package com.rubenzu03.beatbank.application;
 
 import com.rubenzu03.beatbank.application.dto.GenreDto;
 import com.rubenzu03.beatbank.domain.Genre;
+import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.persistence.GenreRepository;
 import com.rubenzu03.beatbank.persistence.SongRepository;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,10 @@ public class GenreService {
     }
 
 
-
-
+    public void deleteGenreById(Long id) {
+        Song song = songRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Song not found"));
+        song.setGenre(null);
+        songRepository.save(song);
+        genreRepository.deleteById(id);
+    }
 }
