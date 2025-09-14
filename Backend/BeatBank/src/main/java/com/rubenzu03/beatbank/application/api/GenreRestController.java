@@ -36,10 +36,10 @@ public class GenreRestController {
         return genreService.createGenre(genreDto);
     }
 
-    @DeleteMapping
+   /* @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping("/{id}")
     public void deleteGenreById(@PathVariable Long id) {
         genreService.deleteGenreById(id);
-    }
+    }*/
 }
