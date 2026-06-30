@@ -1,11 +1,10 @@
 package com.rubenzu03.beatbank.application.service;
 
 import com.rubenzu03.beatbank.application.dto.GenreDto;
+import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.GenreUseCase;
 import com.rubenzu03.beatbank.domain.Genre;
-import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.domain.port.outbound.GenreRepository;
-import com.rubenzu03.beatbank.domain.port.outbound.SongRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,37 +13,36 @@ import java.util.List;
 public class GenreUseCaseImpl implements GenreUseCase {
 
     private final GenreRepository genreRepository;
-    private final SongRepository songRepository;
+    private final DtoMapper mapper;
 
-    public GenreUseCaseImpl(GenreRepository genreRepository, SongRepository songRepository) {
+    public GenreUseCaseImpl(GenreRepository genreRepository, DtoMapper mapper) {
         this.genreRepository = genreRepository;
-        this.songRepository = songRepository;
+        this.mapper = mapper;
     }
 
     @Override
     public List<GenreDto> getAllGenres() {
-        return genreRepository.findAll().stream()
-                .map(GenreDto::new)
-                .toList();
+        return mapper.toGenreDtoList(genreRepository.findAll());
     }
 
     @Override
     public GenreDto getGenreById(Long id) {
         return genreRepository.findById(id)
-                .map(GenreDto::new)
-                .orElse(null);
+                .map(mapper::toGenreDto)
+                .orElseThrow(() -> new ResourceNotFoundException("Genre", id));
     }
 
     @Override
     public GenreDto createGenre(GenreDto genreDto) {
         Genre genre = new Genre(genreDto);
         genreRepository.save(genre);
-        return new GenreDto(genre);
+        return mapper.toGenreDto(genre);
     }
 
     @Override
     public void deleteGenreById(Long id) {
-        Genre genre = genreRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Genre not found"));
+        Genre genre = genreRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Genre", id));
         genre.getSongs().forEach(song -> song.setGenre(null));
         genre.getSongs().clear();
         genreRepository.deleteById(id);

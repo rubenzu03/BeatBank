@@ -2,6 +2,7 @@ package com.rubenzu03.beatbank.application.service;
 
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
+import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
 import com.rubenzu03.beatbank.domain.Artist;
 import com.rubenzu03.beatbank.domain.Song;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class SongUseCaseImpl implements SongUseCase {
@@ -20,52 +20,51 @@ public class SongUseCaseImpl implements SongUseCase {
     private final SongRepository songRepository;
     private final ArtistRepository artistRepository;
     private final AlbumRepository albumRepository;
+    private final DtoMapper mapper;
 
-    public SongUseCaseImpl(SongRepository songRepository, ArtistRepository artistRepository, AlbumRepository albumRepository) {
+    public SongUseCaseImpl(SongRepository songRepository, ArtistRepository artistRepository, AlbumRepository albumRepository, DtoMapper mapper) {
         this.songRepository = songRepository;
         this.artistRepository = artistRepository;
         this.albumRepository = albumRepository;
+        this.mapper = mapper;
     }
 
     @Override
     public List<SongDto> getAllSongs(){
-        return songRepository.findAll().stream().map(SongDto::new).collect(Collectors.toList());
+        return mapper.toSongDtoList(songRepository.findAll());
     }
 
     @Override
     public SongDto getSongById(Long id) {
         Song song = songRepository.findSongById(id);
         if (song == null) {
-            return null;
+            throw new ResourceNotFoundException("Song", id);
         }
-        return new SongDto(song);
+        return mapper.toSongDto(song);
     }
 
     @Override
     public SongDto createSong(SongDto songDto){
         Song song = new Song(songDto);
         songRepository.save(song);
-        return new SongDto(song);
+        return mapper.toSongDto(song);
     }
 
     @Override
     public SongDto updateSong(Long id, SongDto songDto) {
-        Song song = songRepository.findById(id).get();
-        if (!Objects.equals(song.getId(), id)) {
-            return null;
-        }
+        Song song = songRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Song", id));
         song.updateSong(songDto);
         songRepository.save(song);
-        return new SongDto(song);
+        return mapper.toSongDto(song);
     }
 
     @Override
     public void deleteSongById(Long id) {
-        if (songRepository.existsById(id)) {
-            songRepository.deleteById(id);
-        } else {
-            throw new IllegalArgumentException("Song with id " + id + " does not exist.");
+        if (!songRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Song", id);
         }
+        songRepository.deleteById(id);
     }
 
     @Override
@@ -73,15 +72,16 @@ public class SongUseCaseImpl implements SongUseCase {
         Song song = songRepository.findSongById(id);
         Artist artist = new Artist(artistDto);
         artist.addSong(song);
-        song.addArtist(new ArtistDto(artist));
+        song.addArtist(artistDto);
         songRepository.save(song);
-        return new SongDto(song);
+        return mapper.toSongDto(song);
     }
 
     @Override
     public void deleteArtistFromSong(Long songId, Long artistId) {
         Song song = songRepository.findSongById(songId);
-        Artist artist = artistRepository.findById(artistId).orElseThrow(() -> new IllegalArgumentException("Artist not found"));
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new ResourceNotFoundException("Artist", artistId));
 
         if (song.getArtists().contains(artist)) {
             song.getArtists().remove(artist);

@@ -1,7 +1,9 @@
 package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.AlbumDto;
+import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,15 +25,27 @@ public class AlbumController {
         return albumUseCase.getAllAlbums();
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AlbumDto getAlbumById(@PathVariable Long id) {
+        return albumUseCase.getAlbumById(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AlbumDto createAlbum(@RequestBody AlbumDto albumDto) {
+    public AlbumDto createAlbum(@Valid @RequestBody AlbumDto albumDto) {
         return albumUseCase.createAlbum(albumDto);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AlbumDto updateAlbum(@RequestParam Long id, @RequestBody AlbumDto albumDto) {
+    public AlbumDto updateAlbum(@PathVariable Long id, @Valid @RequestBody AlbumDto albumDto) {
         return albumUseCase.updateAlbum(id, albumDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAlbumById(@PathVariable Long id) {
+        albumUseCase.deleteAlbumById(id);
     }
 }

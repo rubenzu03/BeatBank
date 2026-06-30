@@ -11,4 +11,5 @@ public interface AlbumUseCase {
     AlbumDto createAlbum(AlbumDto albumDto);
     AlbumDto updateAlbum(Long id, AlbumDto albumDto);
     AlbumDto addSongToAlbum(Long id, SongDto songDto);
+    void deleteAlbumById(Long id);
 }

@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import jakarta.persistence.*;

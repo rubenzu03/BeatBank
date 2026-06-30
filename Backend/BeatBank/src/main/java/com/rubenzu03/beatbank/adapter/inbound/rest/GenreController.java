@@ -2,6 +2,7 @@ package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.GenreDto;
 import com.rubenzu03.beatbank.application.port.inbound.GenreUseCase;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class GenreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public GenreDto createGenre(@RequestBody GenreDto genreDto) {
+    public GenreDto createGenre(@Valid @RequestBody GenreDto genreDto) {
         return genreUseCase.createGenre(genreDto);
     }
 

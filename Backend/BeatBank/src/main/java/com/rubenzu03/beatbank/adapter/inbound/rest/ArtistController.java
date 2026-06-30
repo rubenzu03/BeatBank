@@ -3,6 +3,7 @@ package com.rubenzu03.beatbank.adapter.inbound.rest;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.port.inbound.ArtistUseCase;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class ArtistController {
     @Transactional
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ArtistDto createArtist(@RequestBody ArtistDto artistDto) {
+    public ArtistDto createArtist(@Valid @RequestBody ArtistDto artistDto) {
         return artistUseCase.createArtist(artistDto);
     }
 

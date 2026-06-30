@@ -9,4 +9,6 @@ public interface AlbumRepository {
     List<Album> findAll();
     Optional<Album> findById(Long id);
     Album save(Album album);
+    void deleteById(Long id);
+    boolean existsById(Long id);
 }
