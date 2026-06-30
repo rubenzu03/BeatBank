@@ -1,7 +1,7 @@
-package com.rubenzu03.beatbank.application.api;
+package com.rubenzu03.beatbank.adapter.inbound.rest;
 
-import com.rubenzu03.beatbank.application.ArtistService;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
+import com.rubenzu03.beatbank.application.port.inbound.ArtistUseCase;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,32 +10,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/artists")
-public class ArtistRestController {
+public class ArtistController {
 
-    private final ArtistService artistService;
+    private final ArtistUseCase artistUseCase;
 
-    public ArtistRestController(ArtistService artistService) {
-        this.artistService = artistService;
+    public ArtistController(ArtistUseCase artistUseCase) {
+        this.artistUseCase = artistUseCase;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ArtistDto> getAllArtists() {
-        return artistService.getAllArtists();
+        return artistUseCase.getAllArtists();
     }
 
     @Transactional
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ArtistDto createArtist(@RequestBody ArtistDto artistDto) {
-        return artistService.createArtist(artistDto);
+        return artistUseCase.createArtist(artistDto);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     public void deleteArtistById(@RequestParam Long id) {
-        artistService.deleteArtistById(id);
+        artistUseCase.deleteArtistById(id);
     }
-
-
 }

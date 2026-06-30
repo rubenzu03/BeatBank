@@ -1,39 +1,35 @@
-package com.rubenzu03.beatbank.application.api;
+package com.rubenzu03.beatbank.adapter.inbound.rest;
 
-import com.rubenzu03.beatbank.application.SongService;
-import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.exception.SongNotFoundException;
-import com.rubenzu03.beatbank.domain.Artist;
-import jakarta.el.MethodNotFoundException;
+import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class SongRestController {
+public class SongController {
 
-    private final SongService songService;
+    private final SongUseCase songUseCase;
 
-    public SongRestController(SongService songService) {
-        this.songService = songService;
+    public SongController(SongUseCase songUseCase) {
+        this.songUseCase = songUseCase;
     }
 
     @GetMapping("/songs")
     @ResponseStatus(HttpStatus.OK)
     public List<SongDto> getAllSongs(){
-        return songService.getAllSongs();
+        return songUseCase.getAllSongs();
     }
 
     @GetMapping("/songs/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SongDto getSongById(@PathVariable Long id){
-        SongDto song = songService.getSongById(id);
+        SongDto song = songUseCase.getSongById(id);
         if (song == null) {
             throw new SongNotFoundException(HttpStatus.NOT_FOUND, "Song not found");
         }
@@ -44,35 +40,33 @@ public class SongRestController {
     @PostMapping("/songs")
     @ResponseStatus(HttpStatus.CREATED)
     public SongDto createSong(@RequestBody SongDto songDto){
-        return songService.createSong(songDto);
+        return songUseCase.createSong(songDto);
     }
 
     @Transactional
     @PutMapping("/songs/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SongDto updateSong(@PathVariable Long id, @RequestBody SongDto songDto){
-        return songService.updateSong(id, songDto);
+        return songUseCase.updateSong(id, songDto);
     }
     
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
     public void deleteSongById(@RequestParam Long id) {
-        songService.deleteSongById(id);
+        songUseCase.deleteSongById(id);
     }
 
     @Transactional
     @PostMapping("/songs/{id}/artists")
     @ResponseStatus(HttpStatus.OK)
     public SongDto addArtistToSong(@PathVariable Long id, @RequestBody ArtistDto artistDto){
-        return songService.addArtistToSong(id,artistDto);
+        return songUseCase.addArtistToSong(id, artistDto);
     }
 
     @Transactional
     @DeleteMapping("/songs/{id}/artists/{artistId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteArtistFromSong(@PathVariable Long id, @PathVariable Long artistId) {
-        songService.deleteArtistFromSong(id, artistId);
+        songUseCase.deleteArtistFromSong(id, artistId);
     }
-
-
 }
