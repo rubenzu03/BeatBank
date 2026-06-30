@@ -3,6 +3,7 @@ package com.rubenzu03.beatbank.application.service;
 import com.rubenzu03.beatbank.application.dto.GenreDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.GenreUseCase;
+import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Genre;
 import com.rubenzu03.beatbank.domain.port.outbound.GenreRepository;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class GenreUseCaseImpl implements GenreUseCase {
 
     @Override
     public GenreDto createGenre(GenreDto genreDto) {
-        Genre genre = new Genre(genreDto);
+        Genre genre = new Genre(genreDto.name(), genreDto.description());
         genreRepository.save(genre);
         return mapper.toGenreDto(genre);
     }

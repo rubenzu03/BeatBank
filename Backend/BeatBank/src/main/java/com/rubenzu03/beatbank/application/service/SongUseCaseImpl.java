@@ -4,6 +4,7 @@ import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
+import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Artist;
 import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.domain.port.outbound.AlbumRepository;
@@ -12,7 +13,6 @@ import com.rubenzu03.beatbank.domain.port.outbound.SongRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class SongUseCaseImpl implements SongUseCase {
@@ -45,7 +45,7 @@ public class SongUseCaseImpl implements SongUseCase {
 
     @Override
     public SongDto createSong(SongDto songDto){
-        Song song = new Song(songDto);
+        Song song = new Song(songDto.name(), songDto.duration(), songDto.plays());
         songRepository.save(song);
         return mapper.toSongDto(song);
     }
@@ -54,7 +54,7 @@ public class SongUseCaseImpl implements SongUseCase {
     public SongDto updateSong(Long id, SongDto songDto) {
         Song song = songRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Song", id));
-        song.updateSong(songDto);
+        song.updateSong(songDto.name(), songDto.duration(), songDto.plays());
         songRepository.save(song);
         return mapper.toSongDto(song);
     }
@@ -70,9 +70,9 @@ public class SongUseCaseImpl implements SongUseCase {
     @Override
     public SongDto addArtistToSong(Long id, ArtistDto artistDto){
         Song song = songRepository.findSongById(id);
-        Artist artist = new Artist(artistDto);
+        Artist artist = new Artist(artistDto.name(), artistDto.description());
         artist.addSong(song);
-        song.addArtist(artistDto);
+        song.addArtist(artist);
         songRepository.save(song);
         return mapper.toSongDto(song);
     }

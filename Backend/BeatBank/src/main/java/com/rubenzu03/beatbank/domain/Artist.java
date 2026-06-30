@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank.domain;
 
-import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name="artists")
+@Entity(name = "artists")
 public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +22,9 @@ public class Artist {
     @ManyToMany(mappedBy = "artists")
     private List<Song> songs;
 
-    public Artist (ArtistDto artistDto){
-        this.id = artistDto.id();
-        this.name = artistDto.name();
-        this.description = artistDto.description();
-        this.songs = null;
+    public Artist(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public void addSong(Song song) {

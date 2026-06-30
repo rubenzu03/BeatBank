@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank.domain;
 
-import com.rubenzu03.beatbank.application.dto.GenreDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name="genres")
+@Entity(name = "genres")
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +24,14 @@ public class Genre {
     @OneToMany(mappedBy = "genre")
     private List<Song> songs;
 
-    public Genre(GenreDto genreDto) {
-        this.name = genreDto.name();
-        this.description = genreDto.description();
-        this.songs = genreDto.songs() == null ? null : new ArrayList<>(genreDto.songs().stream().map(Song::new).toList());
+    public Genre(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
-    public void updateGenre(GenreDto genreDto) {
-        this.name = genreDto.name();
-        this.description = genreDto.description();
-        this.songs = genreDto.songs() == null ? null : new ArrayList<>(genreDto.songs().stream().map(Song::new).toList());
+    public void updateGenre(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public void addSongToGenre(Song newSong) {

@@ -1,6 +1,7 @@
-package com.rubenzu03.beatbank.application.service;
+package com.rubenzu03.beatbank.adapter.inbound.rest.mapper;
 
 import com.rubenzu03.beatbank.application.dto.*;
+import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Album;
 import com.rubenzu03.beatbank.domain.Artist;
 import com.rubenzu03.beatbank.domain.Genre;
@@ -11,8 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class DtoMapper {
+public class DtoMapperImpl implements DtoMapper {
 
+    @Override
     public SongDto toSongDto(Song song) {
         return new SongDto(
                 song.getId(),
@@ -26,22 +28,12 @@ public class DtoMapper {
         );
     }
 
+    @Override
     public List<SongDto> toSongDtoList(List<Song> songs) {
         return songs.stream().map(this::toSongDto).collect(Collectors.toList());
     }
 
-    private AlbumDto toAlbumDtoSimple(Album album) {
-        return new AlbumDto(
-                album.getId(),
-                album.getName(),
-                album.getReleaseDate(),
-                album.getCoverImageUrl(),
-                album.getDescription(),
-                album.getGenre(),
-                null
-        );
-    }
-
+    @Override
     public AlbumDto toAlbumDto(Album album) {
         return new AlbumDto(
                 album.getId(),
@@ -56,19 +48,12 @@ public class DtoMapper {
         );
     }
 
+    @Override
     public List<AlbumDto> toAlbumDtoList(List<Album> albums) {
         return albums.stream().map(this::toAlbumDto).collect(Collectors.toList());
     }
 
-    private SongDtoSimple toSongDtoSimple(Song song) {
-        return new SongDtoSimple(
-                song.getId(),
-                song.getName(),
-                song.getDuration(),
-                song.getPlays()
-        );
-    }
-
+    @Override
     public ArtistDto toArtistDto(Artist artist) {
         return new ArtistDto(
                 artist.getId(),
@@ -80,14 +65,12 @@ public class DtoMapper {
         );
     }
 
+    @Override
     public List<ArtistDto> toArtistDtoList(List<Artist> artists) {
         return artists.stream().map(this::toArtistDto).collect(Collectors.toList());
     }
 
-    private ArtistDtoSimple toArtistDtoSimple(Artist artist) {
-        return new ArtistDtoSimple(artist.getId(), artist.getName());
-    }
-
+    @Override
     public GenreDto toGenreDto(Genre genre) {
         return new GenreDto(
                 genre.getId(),
@@ -99,7 +82,33 @@ public class DtoMapper {
         );
     }
 
+    @Override
     public List<GenreDto> toGenreDtoList(List<Genre> genres) {
         return genres.stream().map(this::toGenreDto).toList();
+    }
+
+    private AlbumDto toAlbumDtoSimple(Album album) {
+        return new AlbumDto(
+                album.getId(),
+                album.getName(),
+                album.getReleaseDate(),
+                album.getCoverImageUrl(),
+                album.getDescription(),
+                album.getGenre(),
+                null
+        );
+    }
+
+    private SongDtoSimple toSongDtoSimple(Song song) {
+        return new SongDtoSimple(
+                song.getId(),
+                song.getName(),
+                song.getDuration(),
+                song.getPlays()
+        );
+    }
+
+    private ArtistDtoSimple toArtistDtoSimple(Artist artist) {
+        return new ArtistDtoSimple(artist.getId(), artist.getName());
     }
 }

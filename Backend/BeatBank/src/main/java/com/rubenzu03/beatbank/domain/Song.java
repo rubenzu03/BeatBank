@@ -1,7 +1,5 @@
 package com.rubenzu03.beatbank.domain;
 
-import com.rubenzu03.beatbank.application.dto.ArtistDto;
-import com.rubenzu03.beatbank.application.dto.SongDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +19,7 @@ public class Song {
 
     private String name;
 
-    private String duration; // Duration in format HH:MM:SS
+    private String duration;
 
     private Long plays;
 
@@ -36,42 +34,22 @@ public class Song {
     @ManyToMany
     private List<Artist> artists;
 
-    public Song(SongDto songDto) {
-        this.name = songDto.name();
-        this.duration = songDto.duration();
-        this.plays = songDto.plays() != null ? songDto.plays() : 0L;
-        if (songDto.album() != null) {
-            this.album = new Album();
-            this.album.setId(songDto.album().id());
-        } else {
-            this.album = null;
-        }
-        this.genre = null;
-        this.artists = null;
+    public Song(String name, String duration, Long plays) {
+        this.name = name;
+        this.duration = duration;
+        this.plays = plays != null ? plays : 0L;
     }
 
-    public void updateSong(SongDto songDto) {
-        this.name = songDto.name();
-        this.duration = songDto.duration();
-        if (songDto.album() != null) {
-            this.album = new Album();
-            this.album.setId(songDto.album().id());
-        } else {
-            this.album = null;
-        }
-        this.plays = songDto.plays() != null ? songDto.plays() : 0L;
-        this.genre = null;
-        this.artists = null;
+    public void updateSong(String name, String duration, Long plays) {
+        this.name = name;
+        this.duration = duration;
+        this.plays = plays != null ? plays : 0L;
     }
 
-    public void addArtist(ArtistDto artist) {
+    public void addArtist(Artist artist) {
         if (this.artists == null) {
             this.artists = new ArrayList<>();
         }
-        this.artists.add(new Artist(artist));
-    }
-
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+        this.artists.add(artist);
     }
 }

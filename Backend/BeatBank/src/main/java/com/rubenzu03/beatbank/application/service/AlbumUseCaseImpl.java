@@ -4,6 +4,7 @@ import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
+import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Album;
 import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.domain.port.outbound.AlbumRepository;
@@ -36,7 +37,7 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
 
     @Override
     public AlbumDto createAlbum(AlbumDto albumDto) {
-        Album album = new Album(albumDto);
+        Album album = new Album(albumDto.name(), albumDto.releaseDate(), albumDto.coverImageUrl(), albumDto.description(), albumDto.genre());
         albumRepository.save(album);
         return mapper.toAlbumDto(album);
     }
@@ -45,7 +46,7 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
     public AlbumDto updateAlbum(Long id, AlbumDto albumDto) {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", id));
-        album.updateAlbum(albumDto);
+        album.updateAlbum(albumDto.name(), albumDto.releaseDate(), albumDto.coverImageUrl(), albumDto.description(), albumDto.genre());
         albumRepository.save(album);
         return mapper.toAlbumDto(album);
     }
@@ -54,7 +55,7 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
     public AlbumDto addSongToAlbum(Long id, SongDto songDto) {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", id));
-        Song newSong = new Song(songDto);
+        Song newSong = new Song(songDto.name(), songDto.duration(), songDto.plays());
         album.addSong(newSong);
         albumRepository.save(album);
         return mapper.toAlbumDto(album);
