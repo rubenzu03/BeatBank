@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/albums")
+@RequestMapping("/api/albums")
 public class AlbumController {
 
-    public final AlbumUseCase albumUseCase;
+    private final AlbumUseCase albumUseCase;
 
     public AlbumController(AlbumUseCase albumUseCase) {
         this.albumUseCase = albumUseCase;

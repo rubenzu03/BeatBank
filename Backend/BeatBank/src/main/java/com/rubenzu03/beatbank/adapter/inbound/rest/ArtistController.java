@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/artists")
+@RequestMapping("/api/artists")
 public class ArtistController {
 
     private final ArtistUseCase artistUseCase;
@@ -31,9 +31,9 @@ public class ArtistController {
         return artistUseCase.createArtist(artistDto);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteArtistById(@RequestParam Long id) {
+    public void deleteArtistById(@PathVariable Long id) {
         artistUseCase.deleteArtistById(id);
     }
 }

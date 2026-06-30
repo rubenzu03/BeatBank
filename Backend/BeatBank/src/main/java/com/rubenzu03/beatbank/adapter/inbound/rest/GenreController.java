@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/genres")
+@RequestMapping("/api/genres")
 public class GenreController {
 
     private final GenreUseCase genreUseCase;
@@ -23,9 +23,8 @@ public class GenreController {
         return genreUseCase.getAllGenres();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/{id}")
     public GenreDto getGenreById(@PathVariable Long id) {
         return genreUseCase.getGenreById(id);
     }
@@ -36,10 +35,9 @@ public class GenreController {
         return genreUseCase.createGenre(genreDto);
     }
 
-   /* @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping("/{id}")
     public void deleteGenreById(@PathVariable Long id) {
         genreUseCase.deleteGenreById(id);
-    }*/
+    }
 }

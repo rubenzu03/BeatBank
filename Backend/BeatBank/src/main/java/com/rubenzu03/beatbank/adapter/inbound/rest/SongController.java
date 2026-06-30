@@ -50,9 +50,9 @@ public class SongController {
         return songUseCase.updateSong(id, songDto);
     }
     
-    @DeleteMapping
+    @DeleteMapping("/songs/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteSongById(@RequestParam Long id) {
+    public void deleteSongById(@PathVariable Long id) {
         songUseCase.deleteSongById(id);
     }
 

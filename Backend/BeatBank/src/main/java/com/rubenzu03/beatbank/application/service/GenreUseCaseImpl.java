@@ -44,9 +44,9 @@ public class GenreUseCaseImpl implements GenreUseCase {
 
     @Override
     public void deleteGenreById(Long id) {
-        Song song = songRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Song not found"));
-        song.setGenre(null);
-        songRepository.save(song);
+        Genre genre = genreRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Genre not found"));
+        genre.getSongs().forEach(song -> song.setGenre(null));
+        genre.getSongs().clear();
         genreRepository.deleteById(id);
     }
 }
