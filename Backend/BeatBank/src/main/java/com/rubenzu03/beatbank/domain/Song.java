@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -25,9 +26,13 @@ public class Song {
 
     private Long plays;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn
     private Album album;
+
+    @ManyToOne
+    @JoinColumn
+    private Genre genre;
 
     @ManyToMany
     private List<Artist> artists;
@@ -42,6 +47,7 @@ public class Song {
         } else {
             this.album = null;
         }
+        this.genre = null;
         this.artists = null;
     }
 
@@ -55,18 +61,18 @@ public class Song {
             this.album = null;
         }
         this.plays = songDto.plays() != null ? songDto.plays() : 0L;
+        this.genre = null;
         this.artists = null;
     }
 
     public void addArtist(ArtistDto artist) {
+        if (this.artists == null) {
+            this.artists = new ArrayList<>();
+        }
         this.artists.add(new Artist(artist));
     }
 
     public void setGenre(Genre genre) {
-        if (this.album != null) {
-            this.album.setGenre(genre);
-        } else {
-            throw new IllegalStateException("Cannot set genre for a song without an album");
-        }
+        this.genre = genre;
     }
 }

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -21,27 +22,26 @@ public class Genre {
 
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "genre")
     private List<Song> songs;
 
     public Genre(GenreDto genreDto) {
         this.name = genreDto.name();
         this.description = genreDto.description();
-        this.songs = genreDto.songs() == null ? null : genreDto.songs().stream().map(Song::new).toList();
+        this.songs = genreDto.songs() == null ? null : new ArrayList<>(genreDto.songs().stream().map(Song::new).toList());
     }
 
     public void updateGenre(GenreDto genreDto) {
         this.name = genreDto.name();
         this.description = genreDto.description();
-        this.songs = genreDto.songs() == null ? null : genreDto.songs().stream().map(Song::new).toList();
+        this.songs = genreDto.songs() == null ? null : new ArrayList<>(genreDto.songs().stream().map(Song::new).toList());
     }
 
     public void addSongToGenre(Song newSong) {
         if (this.songs == null) {
-            this.songs = List.of(newSong);
-        } else {
-            this.songs.add(newSong);
+            this.songs = new ArrayList<>();
         }
+        this.songs.add(newSong);
         newSong.setGenre(this);
     }
 }

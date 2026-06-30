@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -16,7 +17,6 @@ import java.util.List;
 public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
     private String name;
     private String description;
@@ -33,9 +33,8 @@ public class Artist {
 
     public void addSong(Song song) {
         if (this.songs == null) {
-            this.songs = List.of(song);
-        } else {
-            this.songs.add(song);
+            this.songs = new ArrayList<>();
         }
+        this.songs.add(song);
     }
 }
