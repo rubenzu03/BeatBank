@@ -1,6 +1,7 @@
 package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.AlbumDto;
+import com.rubenzu03.beatbank.application.dto.AlbumPatchDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
 import jakarta.validation.Valid;
@@ -41,6 +42,12 @@ public class AlbumController {
     @ResponseStatus(HttpStatus.OK)
     public AlbumDto updateAlbum(@PathVariable Long id, @Valid @RequestBody AlbumDto albumDto) {
         return albumUseCase.updateAlbum(id, albumDto);
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AlbumDto patchAlbum(@PathVariable Long id, @RequestBody AlbumPatchDto patch) {
+        return albumUseCase.patchAlbum(id, patch);
     }
 
     @DeleteMapping("/{id}")

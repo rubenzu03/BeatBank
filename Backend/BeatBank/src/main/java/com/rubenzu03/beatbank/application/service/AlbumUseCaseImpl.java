@@ -1,6 +1,7 @@
 package com.rubenzu03.beatbank.application.service;
 
 import com.rubenzu03.beatbank.application.dto.AlbumDto;
+import com.rubenzu03.beatbank.application.dto.AlbumPatchDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
@@ -47,6 +48,18 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", id));
         album.updateAlbum(albumDto.name(), albumDto.releaseDate(), albumDto.coverImageUrl(), albumDto.description(), albumDto.genre());
+        albumRepository.save(album);
+        return mapper.toAlbumDto(album);
+    }
+
+    @Override
+    public AlbumDto patchAlbum(Long id, AlbumPatchDto patch) {
+        Album album = albumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Album", id));
+        if (patch.name() != null) album.setName(patch.name());
+        if (patch.releaseDate() != null) album.setReleaseDate(patch.releaseDate());
+        if (patch.coverImageUrl() != null) album.setCoverImageUrl(patch.coverImageUrl());
+        if (patch.description() != null) album.setDescription(patch.description());
         albumRepository.save(album);
         return mapper.toAlbumDto(album);
     }

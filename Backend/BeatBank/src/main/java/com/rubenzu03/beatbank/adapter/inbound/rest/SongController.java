@@ -2,6 +2,7 @@ package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
+import com.rubenzu03.beatbank.application.dto.SongPatchDto;
 import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -44,6 +45,13 @@ public class SongController {
     @ResponseStatus(HttpStatus.OK)
     public SongDto updateSong(@PathVariable Long id, @Valid @RequestBody SongDto songDto){
         return songUseCase.updateSong(id, songDto);
+    }
+
+    @Transactional
+    @PatchMapping("/songs/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public SongDto patchSong(@PathVariable Long id, @RequestBody SongPatchDto patch){
+        return songUseCase.patchSong(id, patch);
     }
 
     @DeleteMapping("/songs/{id}")

@@ -1,6 +1,7 @@
 package com.rubenzu03.beatbank.application.service;
 
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
+import com.rubenzu03.beatbank.application.dto.ArtistPatchDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.ArtistUseCase;
 import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
@@ -36,6 +37,16 @@ public class ArtistUseCaseImpl implements ArtistUseCase {
     @Override
     public ArtistDto createArtist(ArtistDto artistDto){
         Artist artist = new Artist(artistDto.name(), artistDto.description());
+        artistRepository.save(artist);
+        return mapper.toArtistDto(artist);
+    }
+
+    @Override
+    public ArtistDto patchArtist(Long id, ArtistPatchDto patch) {
+        Artist artist = artistRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Artist", id));
+        if (patch.name() != null) artist.setName(patch.name());
+        if (patch.description() != null) artist.setDescription(patch.description());
         artistRepository.save(artist);
         return mapper.toArtistDto(artist);
     }

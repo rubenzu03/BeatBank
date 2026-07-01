@@ -1,6 +1,7 @@
 package com.rubenzu03.beatbank.application.service;
 
 import com.rubenzu03.beatbank.application.dto.GenreDto;
+import com.rubenzu03.beatbank.application.dto.GenrePatchDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.GenreUseCase;
 import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
@@ -36,6 +37,16 @@ public class GenreUseCaseImpl implements GenreUseCase {
     @Override
     public GenreDto createGenre(GenreDto genreDto) {
         Genre genre = new Genre(genreDto.name(), genreDto.description());
+        genreRepository.save(genre);
+        return mapper.toGenreDto(genre);
+    }
+
+    @Override
+    public GenreDto patchGenre(Long id, GenrePatchDto patch) {
+        Genre genre = genreRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Genre", id));
+        if (patch.name() != null) genre.setName(patch.name());
+        if (patch.description() != null) genre.setDescription(patch.description());
         genreRepository.save(genre);
         return mapper.toGenreDto(genre);
     }

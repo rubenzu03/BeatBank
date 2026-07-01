@@ -1,6 +1,7 @@
 package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.GenreDto;
+import com.rubenzu03.beatbank.application.dto.GenrePatchDto;
 import com.rubenzu03.beatbank.application.port.inbound.GenreUseCase;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,12 @@ public class GenreController {
     @ResponseStatus(HttpStatus.CREATED)
     public GenreDto createGenre(@Valid @RequestBody GenreDto genreDto) {
         return genreUseCase.createGenre(genreDto);
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public GenreDto patchGenre(@PathVariable Long id, @RequestBody GenrePatchDto patch) {
+        return genreUseCase.patchGenre(id, patch);
     }
 
     @DeleteMapping("/{id}")

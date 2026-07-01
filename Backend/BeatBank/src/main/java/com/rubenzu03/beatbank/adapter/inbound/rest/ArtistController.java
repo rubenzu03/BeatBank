@@ -1,6 +1,7 @@
 package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.ArtistDto;
+import com.rubenzu03.beatbank.application.dto.ArtistPatchDto;
 import com.rubenzu03.beatbank.application.port.inbound.ArtistUseCase;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -30,6 +31,13 @@ public class ArtistController {
     @ResponseStatus(HttpStatus.CREATED)
     public ArtistDto createArtist(@Valid @RequestBody ArtistDto artistDto) {
         return artistUseCase.createArtist(artistDto);
+    }
+
+    @Transactional
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ArtistDto patchArtist(@PathVariable Long id, @RequestBody ArtistPatchDto patch) {
+        return artistUseCase.patchArtist(id, patch);
     }
 
     @DeleteMapping("/{id}")
