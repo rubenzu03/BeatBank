@@ -5,6 +5,9 @@ import com.rubenzu03.beatbank.application.dto.AlbumPatchDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +25,8 @@ public class AlbumController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<AlbumDto> getAllAlbums() {
-        return albumUseCase.getAllAlbums();
+    public Page<AlbumDto> getAllAlbums(@PageableDefault(size = 20) Pageable pageable) {
+        return albumUseCase.getAllAlbums(pageable);
     }
 
     @GetMapping("/{id}")

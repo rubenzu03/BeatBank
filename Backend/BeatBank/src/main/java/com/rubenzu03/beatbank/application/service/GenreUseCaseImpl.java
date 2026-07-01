@@ -7,9 +7,9 @@ import com.rubenzu03.beatbank.application.port.inbound.GenreUseCase;
 import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Genre;
 import com.rubenzu03.beatbank.domain.port.outbound.GenreRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class GenreUseCaseImpl implements GenreUseCase {
@@ -23,8 +23,8 @@ public class GenreUseCaseImpl implements GenreUseCase {
     }
 
     @Override
-    public List<GenreDto> getAllGenres() {
-        return mapper.toGenreDtoList(genreRepository.findAll());
+    public Page<GenreDto> getAllGenres(Pageable pageable) {
+        return genreRepository.findAll(pageable).map(mapper::toGenreDto);
     }
 
     @Override

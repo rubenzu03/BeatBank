@@ -6,6 +6,9 @@ import com.rubenzu03.beatbank.application.dto.SongPatchDto;
 import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +26,8 @@ public class SongController {
 
     @GetMapping("/songs")
     @ResponseStatus(HttpStatus.OK)
-    public List<SongDto> getAllSongs(){
-        return songUseCase.getAllSongs();
+    public Page<SongDto> getAllSongs(@PageableDefault(size = 20) Pageable pageable){
+        return songUseCase.getAllSongs(pageable);
     }
 
     @GetMapping("/songs/{id}")

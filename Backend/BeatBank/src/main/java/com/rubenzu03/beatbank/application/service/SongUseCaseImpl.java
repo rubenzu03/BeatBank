@@ -11,9 +11,9 @@ import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.domain.port.outbound.AlbumRepository;
 import com.rubenzu03.beatbank.domain.port.outbound.ArtistRepository;
 import com.rubenzu03.beatbank.domain.port.outbound.SongRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SongUseCaseImpl implements SongUseCase {
@@ -31,8 +31,8 @@ public class SongUseCaseImpl implements SongUseCase {
     }
 
     @Override
-    public List<SongDto> getAllSongs(){
-        return mapper.toSongDtoList(songRepository.findAll());
+    public Page<SongDto> getAllSongs(Pageable pageable){
+        return songRepository.findAll(pageable).map(mapper::toSongDto);
     }
 
     @Override

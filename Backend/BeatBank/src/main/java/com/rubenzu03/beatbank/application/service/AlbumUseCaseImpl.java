@@ -9,9 +9,9 @@ import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Album;
 import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.domain.port.outbound.AlbumRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AlbumUseCaseImpl implements AlbumUseCase {
@@ -25,8 +25,8 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
     }
 
     @Override
-    public List<AlbumDto> getAllAlbums(){
-        return mapper.toAlbumDtoList(albumRepository.findAll());
+    public Page<AlbumDto> getAllAlbums(Pageable pageable){
+        return albumRepository.findAll(pageable).map(mapper::toAlbumDto);
     }
 
     @Override

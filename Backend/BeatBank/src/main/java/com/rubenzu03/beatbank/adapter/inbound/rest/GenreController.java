@@ -4,6 +4,9 @@ import com.rubenzu03.beatbank.application.dto.GenreDto;
 import com.rubenzu03.beatbank.application.dto.GenrePatchDto;
 import com.rubenzu03.beatbank.application.port.inbound.GenreUseCase;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +24,8 @@ public class GenreController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<GenreDto> getAllGenres() {
-        return genreUseCase.getAllGenres();
+    public Page<GenreDto> getAllGenres(@PageableDefault(size = 20) Pageable pageable) {
+        return genreUseCase.getAllGenres(pageable);
     }
 
     @GetMapping("/{id}")

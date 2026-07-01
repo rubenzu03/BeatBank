@@ -7,9 +7,9 @@ import com.rubenzu03.beatbank.application.port.inbound.ArtistUseCase;
 import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Artist;
 import com.rubenzu03.beatbank.domain.port.outbound.ArtistRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ArtistUseCaseImpl implements ArtistUseCase {
@@ -23,8 +23,8 @@ public class ArtistUseCaseImpl implements ArtistUseCase {
     }
 
     @Override
-    public List<ArtistDto> getAllArtists() {
-        return mapper.toArtistDtoList(artistRepository.findAll());
+    public Page<ArtistDto> getAllArtists(Pageable pageable) {
+        return artistRepository.findAll(pageable).map(mapper::toArtistDto);
     }
 
     @Override
