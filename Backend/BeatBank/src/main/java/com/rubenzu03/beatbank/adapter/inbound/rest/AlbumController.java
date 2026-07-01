@@ -4,6 +4,8 @@ import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.application.dto.AlbumPatchDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,36 +26,48 @@ public class AlbumController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all albums")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved albums")
     @ResponseStatus(HttpStatus.OK)
     public Page<AlbumDto> getAllAlbums(@PageableDefault(size = 20) Pageable pageable) {
         return albumUseCase.getAllAlbums(pageable);
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get album by ID")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved album")
     @ResponseStatus(HttpStatus.OK)
     public AlbumDto getAlbumById(@PathVariable Long id) {
         return albumUseCase.getAlbumById(id);
     }
 
     @PostMapping
+    @Operation(summary = "Create a new album")
+    @ApiResponse(responseCode = "201", description = "Successfully created album")
     @ResponseStatus(HttpStatus.CREATED)
     public AlbumDto createAlbum(@Valid @RequestBody AlbumDto albumDto) {
         return albumUseCase.createAlbum(albumDto);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update an existing album")
+    @ApiResponse(responseCode = "200", description = "Successfully updated album")
     @ResponseStatus(HttpStatus.OK)
     public AlbumDto updateAlbum(@PathVariable Long id, @Valid @RequestBody AlbumDto albumDto) {
         return albumUseCase.updateAlbum(id, albumDto);
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Partially update an existing album")
+    @ApiResponse(responseCode = "200", description = "Successfully partially updated album")
     @ResponseStatus(HttpStatus.OK)
     public AlbumDto patchAlbum(@PathVariable Long id, @RequestBody AlbumPatchDto patch) {
         return albumUseCase.patchAlbum(id, patch);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete an album by ID")
+    @ApiResponse(responseCode = "200", description = "Successfully deleted album")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAlbumById(@PathVariable Long id) {
         albumUseCase.deleteAlbumById(id);
