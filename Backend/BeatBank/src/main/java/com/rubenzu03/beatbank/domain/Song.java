@@ -1,13 +1,11 @@
 package com.rubenzu03.beatbank.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.rubenzu03.beatbank.application.dto.ArtistDto;
-import com.rubenzu03.beatbank.application.dto.SongDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -21,52 +19,37 @@ public class Song {
 
     private String name;
 
-    private String duration; // Duration in format HH:MM:SS
+    private String duration;
 
     private Long plays;
 
-    @ManyToOne(cascade = {CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn
     private Album album;
+
+    @ManyToOne
+    @JoinColumn
+    private Genre genre;
 
     @ManyToMany
     private List<Artist> artists;
 
-    public Song(SongDto songDto) {
-        this.name = songDto.name();
-        this.duration = songDto.duration();
-        this.plays = songDto.plays() != null ? songDto.plays() : 0L;
-        if (songDto.album() != null) {
-            this.album = new Album();
-            this.album.setId(songDto.album().id());
-        } else {
-            this.album = null;
-        }
-        this.artists = null;
+    public Song(String name, String duration, Long plays) {
+        this.name = name;
+        this.duration = duration;
+        this.plays = plays != null ? plays : 0L;
     }
 
-    public void updateSong(SongDto songDto) {
-        this.name = songDto.name();
-        this.duration = songDto.duration();
-        if (songDto.album() != null) {
-            this.album = new Album();
-            this.album.setId(songDto.album().id());
-        } else {
-            this.album = null;
-        }
-        this.plays = songDto.plays() != null ? songDto.plays() : 0L;
-        this.artists = null;
+    public void updateSong(String name, String duration, Long plays) {
+        this.name = name;
+        this.duration = duration;
+        this.plays = plays != null ? plays : 0L;
     }
 
-    public void addArtist(ArtistDto artist) {
-        this.artists.add(new Artist(artist));
-    }
-
-    public void setGenre(Genre genre) {
-        if (this.album != null) {
-            this.album.setGenre(genre);
-        } else {
-            throw new IllegalStateException("Cannot set genre for a song without an album");
+    public void addArtist(Artist artist) {
+        if (this.artists == null) {
+            this.artists = new ArrayList<>();
         }
+        this.artists.add(artist);
     }
 }

@@ -1,30 +1,19 @@
 package com.rubenzu03.beatbank.application.dto;
 
-import com.rubenzu03.beatbank.domain.Album;
-import com.rubenzu03.beatbank.domain.Genre;
-import com.rubenzu03.beatbank.domain.Song;
-import lombok.Value;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * DTO for {@link com.rubenzu03.beatbank.domain.Album}
- */
-public record AlbumDto(Long id, String name, String releaseDate, String coverImageUrl, String description, Genre genre,
-                       List<SongDto> songs) implements Serializable {
-    public AlbumDto(Album album) {
-        this(
-                album.getId(),
-                album.getName(),
-                album.getReleaseDate(),
-                album.getCoverImageUrl(),
-                album.getDescription(),
-                album.getGenre(),
-
-                album.getSongs() == null ? null : album.getSongs().stream()
-                        .map(SongDto::new)
-                        .toList()
-        );
-    }
-}
+@Schema(description = "Full album representation with genre and songs")
+public record AlbumDto(
+        @Schema(description = "Unique identifier", example = "1") Long id,
+        @NotBlank @Schema(description = "Album name", example = "A Night at the Opera") String name,
+        @Schema(description = "Release date", example = "1975-11-21") String releaseDate,
+        @Schema(description = "Cover image URL", example = "https://example.com/cover.jpg") String coverImageUrl,
+        @Schema(description = "Album description") String description,
+        @Valid @Schema(description = "Genre of the album") GenreDto genre,
+        @Valid @Schema(description = "Songs in this album") List<SongDto> songs
+) implements Serializable {}

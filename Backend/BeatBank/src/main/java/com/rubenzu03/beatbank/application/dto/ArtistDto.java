@@ -1,22 +1,16 @@
 package com.rubenzu03.beatbank.application.dto;
 
-import com.rubenzu03.beatbank.domain.Artist;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * DTO for {@link Artist}
- */
-public record ArtistDto(Long id, String name, List<SongDtoSimple> songs, String description) implements Serializable {
-    public ArtistDto(Artist artist){
-        this(
-            artist.getId(),
-            artist.getName(),
-            artist.getSongs() == null ? null : artist.getSongs().stream()
-                .map(SongDtoSimple::new)
-                .toList(),
-            artist.getDescription()
-        );
-    }
-}
+@Schema(description = "Full artist representation with songs")
+public record ArtistDto(
+        @Schema(description = "Unique identifier", example = "1") Long id,
+        @NotBlank @Schema(description = "Artist name", example = "Queen") String name,
+        @Valid @Schema(description = "Songs by this artist") List<SongDtoSimple> songs,
+        @Schema(description = "Artist biography") String description
+) implements Serializable {}

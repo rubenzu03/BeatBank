@@ -1,7 +1,5 @@
 package com.rubenzu03.beatbank.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,37 +15,34 @@ import java.util.List;
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
 
     private String name;
 
-    private String releaseDate; // Formato: DD-MM-YYYY
+    private String releaseDate;
     private String coverImageUrl;
     private String description;
 
     @ManyToOne
     private Genre genre;
 
-    @OneToMany (mappedBy = "album", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "album", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Song> songs;
 
-    public Album(AlbumDto albumDto) {
-        this.name = albumDto.name();
-        this.releaseDate = albumDto.releaseDate();
-        this.coverImageUrl = albumDto.coverImageUrl();
-        this.genre = albumDto.genre();
-        this.description = albumDto.description();
-        this.songs = albumDto.songs() == null ? null : albumDto.songs().stream().map(Song::new).toList();
+    public Album(String name, String releaseDate, String coverImageUrl, String description, Genre genre) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+        this.coverImageUrl = coverImageUrl;
+        this.description = description;
+        this.genre = genre;
     }
 
-    public void updateAlbum(AlbumDto albumDto) {
-        this.name = albumDto.name();
-        this.releaseDate = albumDto.releaseDate();
-        this.coverImageUrl = albumDto.coverImageUrl();
-        this.genre = albumDto.genre();
-        this.description = albumDto.description();
-        this.songs = albumDto.songs() == null ? null : albumDto.songs().stream().map(Song::new).toList();
+    public void updateAlbum(String name, String releaseDate, String coverImageUrl, String description, Genre genre) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+        this.coverImageUrl = coverImageUrl;
+        this.description = description;
+        this.genre = genre;
     }
 
     public void addSong(Song newSong) {

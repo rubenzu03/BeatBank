@@ -1,25 +1,18 @@
 package com.rubenzu03.beatbank.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rubenzu03.beatbank.domain.Album;
-import com.rubenzu03.beatbank.domain.Artist;
-import com.rubenzu03.beatbank.domain.Song;
-import lombok.Value;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * DTO for {@link com.rubenzu03.beatbank.domain.Song}
- */
-public record SongDto(Long id, String name, String duration, Long plays, AlbumDto album,
-                      List<ArtistDtoSimple> artists) implements Serializable {
-    public SongDto(Song x) {
-        this(x.getId(), x.getName(), x.getDuration(),
-            x.getPlays(),
-            x.getAlbum() == null ? null : new AlbumDto(x.getAlbum()),
-            x.getArtists() == null ? null : x.getArtists().stream()
-                .map(ArtistDtoSimple::new)
-                .toList());
-    }
-}
+@Schema(description = "Full song representation with album and artist details")
+public record SongDto(
+        @Schema(description = "Unique identifier", example = "1") Long id,
+        @NotBlank @Schema(description = "Song name", example = "Bohemian Rhapsody") String name,
+        @Schema(description = "Duration in mm:ss format", example = "5:55") String duration,
+        @Schema(description = "Number of plays", example = "1000000") Long plays,
+        @Valid @Schema(description = "Album this song belongs to") AlbumDto album,
+        @Valid @Schema(description = "Artists performing this song") List<ArtistDtoSimple> artists
+) implements Serializable {}
