@@ -92,6 +92,22 @@ public class SongUseCaseImpl implements SongUseCase {
     }
 
     @Override
+    public Page<SongDto> searchSongs(String query, Pageable pageable) {
+        return songRepository.searchSongs(query, pageable).map(mapper::toSongDto);
+    }
+
+    @Override
+    public SongDto incrementPlays(Long id) {
+        Song song = songRepository.findSongById(id);
+        if (song == null) {
+            throw new ResourceNotFoundException("Song", id);
+        }
+        song.setPlays(song.getPlays() == null ? 1L : song.getPlays() + 1);
+        songRepository.save(song);
+        return mapper.toSongDto(song);
+    }
+
+    @Override
     public void deleteArtistFromSong(Long songId, Long artistId) {
         Song song = songRepository.findSongById(songId);
         Artist artist = artistRepository.findById(artistId)

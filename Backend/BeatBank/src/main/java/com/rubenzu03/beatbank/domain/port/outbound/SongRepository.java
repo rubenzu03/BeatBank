@@ -12,6 +12,7 @@ public interface SongRepository {
     Page<Song> findAll(Pageable pageable);
     Optional<Song> findById(Long id);
     Song findSongById(Long id);
+    Page<Song> searchSongs(String query, Pageable pageable);
     Song save(Song song);
     void deleteById(Long id);
     boolean existsById(Long id);
