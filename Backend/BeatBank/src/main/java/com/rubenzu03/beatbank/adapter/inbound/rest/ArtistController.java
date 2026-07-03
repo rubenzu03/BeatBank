@@ -13,8 +13,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/artists")
 public class ArtistController {
@@ -31,6 +29,14 @@ public class ArtistController {
     @ResponseStatus(HttpStatus.OK)
     public Page<ArtistDto> getAllArtists(@PageableDefault(size = 20) Pageable pageable) {
         return artistUseCase.getAllArtists(pageable);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get artist by ID")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved artist")
+    @ResponseStatus(HttpStatus.OK)
+    public ArtistDto getArtistById(@PathVariable Long id) {
+        return artistUseCase.getArtistById(id);
     }
 
     @Transactional

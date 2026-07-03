@@ -6,14 +6,13 @@ import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/albums")
@@ -47,6 +46,15 @@ public class AlbumController {
     @ResponseStatus(HttpStatus.CREATED)
     public AlbumDto createAlbum(@Valid @RequestBody AlbumDto albumDto) {
         return albumUseCase.createAlbum(albumDto);
+    }
+
+    @Transactional
+    @PostMapping("/{id}/songs")
+    @Operation(summary = "Add a song to an album")
+    @ApiResponse(responseCode = "200", description = "Successfully added song to album")
+    @ResponseStatus(HttpStatus.OK)
+    public AlbumDto addSongToAlbum(@PathVariable Long id, @Valid @RequestBody SongDto songDto) {
+        return albumUseCase.addSongToAlbum(id, songDto);
     }
 
     @PutMapping("/{id}")
