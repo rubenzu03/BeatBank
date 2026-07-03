@@ -48,7 +48,6 @@ public class AlbumController {
         return albumUseCase.createAlbum(albumDto);
     }
 
-    @Transactional
     @PostMapping("/{id}/songs")
     @Operation(summary = "Add a song to an album")
     @ApiResponse(responseCode = "200", description = "Successfully added song to album")

@@ -39,7 +39,6 @@ public class ArtistController {
         return artistUseCase.getArtistById(id);
     }
 
-    @Transactional
     @PostMapping
     @Operation(summary = "Create a new artist")
     @ApiResponse(responseCode = "201", description = "Successfully created artist")
@@ -48,7 +47,6 @@ public class ArtistController {
         return artistUseCase.createArtist(artistDto);
     }
 
-    @Transactional
     @PatchMapping("/{id}")
     @Operation(summary = "Update an existing artist")
     @ApiResponse(responseCode = "200", description = "Successfully updated artist")
