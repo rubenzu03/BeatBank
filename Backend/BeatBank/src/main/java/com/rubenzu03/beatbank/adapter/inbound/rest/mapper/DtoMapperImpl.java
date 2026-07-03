@@ -41,7 +41,7 @@ public class DtoMapperImpl implements DtoMapper {
                 album.getReleaseDate(),
                 album.getCoverImageUrl(),
                 album.getDescription(),
-                album.getGenre(),
+                album.getGenre() == null ? null : toGenreDtoSimple(album.getGenre()),
                 album.getSongs() == null ? null : album.getSongs().stream()
                         .map(this::toSongDto)
                         .toList()
@@ -94,7 +94,7 @@ public class DtoMapperImpl implements DtoMapper {
                 album.getReleaseDate(),
                 album.getCoverImageUrl(),
                 album.getDescription(),
-                album.getGenre(),
+                album.getGenre() == null ? null : toGenreDtoSimple(album.getGenre()),
                 null
         );
     }
@@ -110,5 +110,9 @@ public class DtoMapperImpl implements DtoMapper {
 
     private ArtistDtoSimple toArtistDtoSimple(Artist artist) {
         return new ArtistDtoSimple(artist.getId(), artist.getName());
+    }
+
+    private GenreDto toGenreDtoSimple(Genre genre) {
+        return new GenreDto(genre.getId(), genre.getName(), genre.getDescription(), null);
     }
 }

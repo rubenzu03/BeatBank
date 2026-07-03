@@ -7,8 +7,10 @@ import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
 import com.rubenzu03.beatbank.application.port.outbound.DtoMapper;
 import com.rubenzu03.beatbank.domain.Album;
+import com.rubenzu03.beatbank.domain.Genre;
 import com.rubenzu03.beatbank.domain.Song;
 import com.rubenzu03.beatbank.domain.port.outbound.AlbumRepository;
+import com.rubenzu03.beatbank.domain.port.outbound.GenreRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,19 @@ import org.springframework.stereotype.Service;
 public class AlbumUseCaseImpl implements AlbumUseCase {
 
     private final AlbumRepository albumRepository;
+    private final GenreRepository genreRepository;
     private final DtoMapper mapper;
 
-    public AlbumUseCaseImpl(AlbumRepository albumRepository, DtoMapper mapper) {
+    public AlbumUseCaseImpl(AlbumRepository albumRepository, GenreRepository genreRepository, DtoMapper mapper) {
         this.albumRepository = albumRepository;
+        this.genreRepository = genreRepository;
         this.mapper = mapper;
+    }
+
+    private Genre resolveGenre(com.rubenzu03.beatbank.application.dto.GenreDto genreDto) {
+        if (genreDto == null || genreDto.id() == null) return null;
+        return genreRepository.findById(genreDto.id())
+                .orElseThrow(() -> new ResourceNotFoundException("Genre", genreDto.id()));
     }
 
     @Override
@@ -38,7 +48,8 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
 
     @Override
     public AlbumDto createAlbum(AlbumDto albumDto) {
-        Album album = new Album(albumDto.name(), albumDto.releaseDate(), albumDto.coverImageUrl(), albumDto.description(), albumDto.genre());
+        Genre genre = resolveGenre(albumDto.genre());
+        Album album = new Album(albumDto.name(), albumDto.releaseDate(), albumDto.coverImageUrl(), albumDto.description(), genre);
         albumRepository.save(album);
         return mapper.toAlbumDto(album);
     }
@@ -47,7 +58,8 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
     public AlbumDto updateAlbum(Long id, AlbumDto albumDto) {
         Album album = albumRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Album", id));
-        album.updateAlbum(albumDto.name(), albumDto.releaseDate(), albumDto.coverImageUrl(), albumDto.description(), albumDto.genre());
+        Genre genre = resolveGenre(albumDto.genre());
+        album.updateAlbum(albumDto.name(), albumDto.releaseDate(), albumDto.coverImageUrl(), albumDto.description(), genre);
         albumRepository.save(album);
         return mapper.toAlbumDto(album);
     }
