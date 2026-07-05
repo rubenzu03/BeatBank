@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank.adapter.inbound.rest;
 
-import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.PagedResponse;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.dto.SongPatchDto;
@@ -105,13 +104,13 @@ public class SongController {
     }
 
     @Transactional
-    @PostMapping("/songs/{id}/artists")
-    @Operation(summary = "Add artist to song", description = "Creates a new artist and associates it with the song")
+    @PostMapping("/songs/{songId}/artists/{artistId}")
+    @Operation(summary = "Add artist to song", description = "Links an existing artist to a song by their IDs")
     @ApiResponse(responseCode = "200", description = "Successfully added artist to song")
-    @ApiResponse(responseCode = "404", description = "Song not found")
+    @ApiResponse(responseCode = "404", description = "Song or artist not found")
     @ResponseStatus(HttpStatus.OK)
-    public SongDto addArtistToSong(@PathVariable Long id, @Valid @RequestBody ArtistDto artistDto){
-        return songUseCase.addArtistToSong(id, artistDto);
+    public SongDto addArtistToSong(@PathVariable Long songId, @PathVariable Long artistId){
+        return songUseCase.addArtistToSong(songId, artistId);
     }
 
     @Transactional

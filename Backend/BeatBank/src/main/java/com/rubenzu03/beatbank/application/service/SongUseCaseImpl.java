@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank.application.service;
 
-import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.dto.SongPatchDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
@@ -82,11 +81,16 @@ public class SongUseCaseImpl implements SongUseCase {
     }
 
     @Override
-    public SongDto addArtistToSong(Long id, ArtistDto artistDto){
-        Song song = songRepository.findSongById(id);
-        Artist artist = new Artist(artistDto.name(), artistDto.description());
-        artist.addSong(song);
+    public SongDto addArtistToSong(Long songId, Long artistId){
+        Song song = songRepository.findSongById(songId);
+        if (song == null) {
+            throw new ResourceNotFoundException("Song", songId);
+        }
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new ResourceNotFoundException("Artist", artistId));
+
         song.addArtist(artist);
+        artist.addSong(song);
         songRepository.save(song);
         return mapper.toSongDto(song);
     }

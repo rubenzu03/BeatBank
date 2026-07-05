@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank.application.port.inbound;
 
-import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.dto.SongPatchDto;
 import jakarta.transaction.Transactional;
@@ -18,7 +17,7 @@ public interface SongUseCase {
     SongDto patchSong(Long id, SongPatchDto patch);
     void deleteSongById(Long id);
     @Transactional
-    SongDto addArtistToSong(Long id, ArtistDto artistDto);
+    SongDto addArtistToSong(Long songId, Long artistId);
     @Transactional
     void deleteArtistFromSong(Long songId, Long artistId);
 
