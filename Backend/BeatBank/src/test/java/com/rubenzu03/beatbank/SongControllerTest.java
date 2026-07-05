@@ -165,13 +165,11 @@ class SongControllerTest {
 
     @Test
     void addArtistToSong_ShouldReturn200() throws Exception {
-        when(songUseCase.addArtistToSong(eq(1L), any(ArtistDto.class))).thenReturn(
+        when(songUseCase.addArtistToSong(eq(1L), eq(5L))).thenReturn(
                 new SongDto(1L, "Song", "3:00", 0L, null, null)
         );
 
-        mockMvc.perform(post("/api/songs/1/artists")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"New Artist\"}"))
+        mockMvc.perform(post("/api/songs/1/artists/5"))
                 .andExpect(status().isOk());
     }
 

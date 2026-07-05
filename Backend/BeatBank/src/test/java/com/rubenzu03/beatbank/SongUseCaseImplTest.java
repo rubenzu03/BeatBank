@@ -1,6 +1,5 @@
 package com.rubenzu03.beatbank;
 
-import com.rubenzu03.beatbank.application.dto.ArtistDto;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.dto.SongPatchDto;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
@@ -153,19 +152,23 @@ class SongUseCaseImplTest {
     }
 
     @Test
-    void addArtistToSong_ShouldCreateArtistAndAssociate() {
+    void addArtistToSong_ShouldLinkExistingArtist() {
         Song song = createSong(1L, "Test", "3:00", 0L);
         song.setArtists(new ArrayList<>());
-        ArtistDto artistDto = new ArtistDto(null, "New Artist", null, "desc");
+        Artist artist = new Artist("Existing Artist", "desc");
+        artist.setId(2L);
+
         when(songRepository.findSongById(1L)).thenReturn(song);
+        when(artistRepository.findById(2L)).thenReturn(Optional.of(artist));
         when(songRepository.save(song)).thenReturn(song);
         when(mapper.toSongDto(song)).thenReturn(createSongDto(1L, "Test", "3:00", 0L));
 
-        SongDto result = songUseCase.addArtistToSong(1L, artistDto);
+        SongDto result = songUseCase.addArtistToSong(1L, 2L);
 
         assertThat(result).isNotNull();
         assertThat(song.getArtists()).hasSize(1);
-        assertThat(song.getArtists().getFirst().getName()).isEqualTo("New Artist");
+        assertThat(song.getArtists().getFirst().getName()).isEqualTo("Existing Artist");
+        assertThat(artist.getSongs()).contains(song);
         verify(songRepository).save(song);
     }
 
