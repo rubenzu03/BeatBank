@@ -19,7 +19,7 @@ function isActive(path: string) {
 
 <template>
     <header class ="border-b border-gray-800 bg-gray-950/80 backdrop-blur-md sticky top-0 z-50">
-        <div class ="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
+        <div class ="max-w-7xl mx-auto flex items-center justify-between px-2 h-16">
             <button 
             class ="text-xl font-bold tracking-tight"
             @click="router.push('/')"

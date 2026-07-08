@@ -1,11 +1,9 @@
 <template>
-  <div class="text-center py-16">
-    <h1 class="text-5xl font-bold mb-4">
-      <span class="text-white">Welcome to </span>
-      <span class="text-blue-500">BeatBank</span>
-    </h1>
-    <p class="text-gray-400 text-lg max-w-xl mx-auto">
-      Discover and manage your music collection.
-    </p>
+  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
   </div>
+  <svg width="0" height="0" style="position:absolute; overflow:hidden;">
+  <filter id="soft-blur" x="-60%" y="-60%" width="220%" height="220%">
+    <feGaussianBlur stdDeviation="22" />
+  </filter>
+</svg>
 </template>
