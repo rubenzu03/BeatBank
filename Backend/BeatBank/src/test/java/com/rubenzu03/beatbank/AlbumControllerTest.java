@@ -137,6 +137,19 @@ class AlbumControllerTest {
     }
 
     @Test
+    void updateAlbumCover_ShouldReturn200() throws Exception {
+        when(albumUseCase.updateAlbumCover(eq(1L), any(String.class))).thenReturn(
+                new AlbumDto(1L, "Album", null, "http://new-cover.jpg", null, null, null)
+        );
+
+        mockMvc.perform(patch("/api/albums/1/cover")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"coverImageUrl\":\"http://new-cover.jpg\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.coverImageUrl").value("http://new-cover.jpg"));
+    }
+
+    @Test
     void deleteAlbumById_WhenExists_ShouldReturn200() throws Exception {
         doNothing().when(albumUseCase).deleteAlbumById(1L);
 

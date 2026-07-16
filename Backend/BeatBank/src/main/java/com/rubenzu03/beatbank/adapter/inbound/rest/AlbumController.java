@@ -2,6 +2,7 @@ package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.application.dto.AlbumPatchDto;
+import com.rubenzu03.beatbank.application.dto.CoverUpdateDto;
 import com.rubenzu03.beatbank.application.dto.PagedResponse;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
@@ -83,6 +84,16 @@ public class AlbumController {
     @ResponseStatus(HttpStatus.OK)
     public AlbumDto patchAlbum(@PathVariable Long id, @RequestBody AlbumPatchDto patch) {
         return albumUseCase.patchAlbum(id, patch);
+    }
+
+    @Transactional
+    @PatchMapping("/{id}/cover")
+    @Operation(summary = "Update album cover", description = "Updates only the cover image URL of an album")
+    @ApiResponse(responseCode = "200", description = "Successfully updated cover")
+    @ApiResponse(responseCode = "404", description = "Album not found")
+    @ResponseStatus(HttpStatus.OK)
+    public AlbumDto updateAlbumCover(@PathVariable Long id, @RequestBody CoverUpdateDto cover) {
+        return albumUseCase.updateAlbumCover(id, cover.coverImageUrl());
     }
 
     @Transactional

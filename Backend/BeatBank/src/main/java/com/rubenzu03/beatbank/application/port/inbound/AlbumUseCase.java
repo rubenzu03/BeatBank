@@ -20,4 +20,7 @@ public interface AlbumUseCase {
     AlbumDto addSongToAlbum(Long id, SongDto songDto);
     @Transactional
     void deleteAlbumById(Long id);
+
+    @Transactional
+    AlbumDto updateAlbumCover(Long id, String coverImageUrl);
 }
