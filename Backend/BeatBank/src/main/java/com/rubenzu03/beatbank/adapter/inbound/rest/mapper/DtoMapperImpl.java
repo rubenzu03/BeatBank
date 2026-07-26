@@ -61,6 +61,7 @@ public class DtoMapperImpl implements DtoMapper {
                 artist.getSongs() == null ? null : artist.getSongs().stream()
                         .map(this::toSongDtoSimple)
                         .toList(),
+                artist.getImageUrl(),
                 artist.getDescription()
         );
     }

@@ -155,7 +155,7 @@ class SongUseCaseImplTest {
     void addArtistToSong_ShouldLinkExistingArtist() {
         Song song = createSong(1L, "Test", "3:00", 0L);
         song.setArtists(new ArrayList<>());
-        Artist artist = new Artist("Existing Artist", "desc");
+        Artist artist = new Artist("Existing Artist", null, "desc");
         artist.setId(2L);
 
         when(songRepository.findSongById(1L)).thenReturn(song);
@@ -175,7 +175,7 @@ class SongUseCaseImplTest {
     @Test
     void deleteArtistFromSong_WhenAssociated_ShouldRemove() {
         Song song = createSong(1L, "Test", "3:00", 0L);
-        Artist artist = new Artist("Artist", "desc");
+        Artist artist = new Artist("Artist", null, "desc");
         artist.setId(2L);
         artist.setSongs(new ArrayList<>(List.of(song)));
         song.setArtists(new ArrayList<>(List.of(artist)));
@@ -195,7 +195,7 @@ class SongUseCaseImplTest {
     void deleteArtistFromSong_WhenNotAssociated_ShouldThrow() {
         Song song = createSong(1L, "Test", "3:00", 0L);
         song.setArtists(new ArrayList<>());
-        Artist artist = new Artist("Artist", "desc");
+        Artist artist = new Artist("Artist", null, "desc");
         artist.setId(2L);
         artist.setSongs(new ArrayList<>());
 

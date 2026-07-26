@@ -45,7 +45,7 @@ class ArtistUseCaseImplTest {
     }
 
     private ArtistDto createArtistDto(Long id, String name, String description) {
-        return new ArtistDto(id, name, null, description);
+        return new ArtistDto(id, name, null, null, description);
     }
 
     @Test
@@ -100,7 +100,7 @@ class ArtistUseCaseImplTest {
     @Test
     void patchArtist_WhenExists_ShouldPatchAllFields() {
         Artist existing = createArtist(1L, "Old", "Old desc");
-        ArtistPatchDto patch = new ArtistPatchDto("New Name", "New desc");
+        ArtistPatchDto patch = new ArtistPatchDto("New Name", null, "New desc");
         when(artistRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(artistRepository.save(existing)).thenReturn(existing);
         when(mapper.toArtistDto(existing)).thenReturn(createArtistDto(1L, "New Name", "New desc"));
@@ -114,7 +114,7 @@ class ArtistUseCaseImplTest {
     @Test
     void patchArtist_WhenExists_ShouldPatchPartialFields() {
         Artist existing = createArtist(1L, "Old", "Old desc");
-        ArtistPatchDto patch = new ArtistPatchDto("New Name", null);
+        ArtistPatchDto patch = new ArtistPatchDto("New Name", null, null);
         when(artistRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(artistRepository.save(existing)).thenReturn(existing);
         when(mapper.toArtistDto(existing)).thenReturn(createArtistDto(1L, "New Name", "Old desc"));
@@ -129,7 +129,7 @@ class ArtistUseCaseImplTest {
     void patchArtist_WhenNotExists_ShouldThrow() {
         when(artistRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> artistUseCase.patchArtist(1L, new ArtistPatchDto("X", null)))
+        assertThatThrownBy(() -> artistUseCase.patchArtist(1L, new ArtistPatchDto("X", null, null)))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Artist");
     }

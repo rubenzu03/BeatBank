@@ -1,10 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+}
+
 body {
   margin: 0;
-  background: #0f1117;
+  background: #080a0f;
   color: #e5e5e5;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #app {
@@ -15,25 +21,14 @@ body {
 #app::before {
   content: '';
   position: fixed;
-  inset: -25%;
+  inset: -50%;
   z-index: -1;
-  background: linear-gradient(
-    135deg in oklch,
-    rgba(30, 58, 138, 0.5),
-    rgba(37, 99, 235, 0.44),
-    rgba(79, 70, 229, 0.46),
-    rgba(124, 58, 237, 0.5),
-    rgba(91, 33, 182, 0.55),
-    rgba(124, 58, 237, 0.5),
-    rgba(79, 70, 229, 0.46),
-    rgba(37, 99, 235, 0.44),
-    rgba(30, 58, 138, 0.5)
+  background: radial-gradient(
+    circle at 100% 0%,
+    rgba(99, 102, 241, 0.10) 0%,
+    transparent 50%
   );
-  background-repeat: repeat;
-  background-size: 300% 300%;
-  filter: url(#soft-blur);
-  animation: gradient-scroll 40s linear infinite;
-  will-change: background-position;
+  pointer-events: none;
 }
 
 #app::after {
@@ -41,17 +36,29 @@ body {
   position: fixed;
   inset: 0;
   z-index: -1;
+  background: radial-gradient(
+    circle at 50% 100%,
+    rgba(99, 102, 241, 0.03) 0%,
+    transparent 50%
+  );
   pointer-events: none;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  color: #fff;
 }
 
-@keyframes gradient-scroll {
-  0% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  #app::before, #app::after { animation: none; }
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }

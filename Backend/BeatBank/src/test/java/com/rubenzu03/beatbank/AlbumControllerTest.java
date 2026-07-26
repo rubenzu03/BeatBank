@@ -4,6 +4,7 @@ import com.rubenzu03.beatbank.application.dto.*;
 import com.rubenzu03.beatbank.application.exception.GlobalExceptionHandler;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
+import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
 import com.rubenzu03.beatbank.adapter.inbound.rest.AlbumController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,9 +34,12 @@ class AlbumControllerTest {
     @Mock
     private AlbumUseCase albumUseCase;
 
+    @Mock
+    private SongUseCase songUseCase;
+
     @BeforeEach
     void setUp() {
-        AlbumController controller = new AlbumController(albumUseCase);
+        AlbumController controller = new AlbumController(albumUseCase, songUseCase);
         mockMvc = standaloneSetup(controller)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())

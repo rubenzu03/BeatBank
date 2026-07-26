@@ -13,4 +13,7 @@ public interface SpringDataSongRepository extends JpaRepository<Song, Long>, Son
 
     @Query("SELECT s FROM songs s WHERE LOWER(s.name) LIKE LOWER(CONCAT('%', :query, '%'))")
     Page<Song> searchSongs(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT s FROM songs s WHERE s.album.id = :albumId")
+    Page<Song> findByAlbum_Id(@Param("albumId") Long albumId, Pageable pageable);
 }
