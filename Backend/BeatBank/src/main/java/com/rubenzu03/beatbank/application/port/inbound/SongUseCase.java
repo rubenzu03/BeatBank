@@ -22,6 +22,7 @@ public interface SongUseCase {
     void deleteArtistFromSong(Long songId, Long artistId);
 
     Page<SongDto> searchSongs(String query, Pageable pageable);
+    Page<SongDto> getSongsByAlbum(Long albumId, Pageable pageable);
 
     @Transactional
     SongDto incrementPlays(Long id);

@@ -12,5 +12,6 @@ public record ArtistDto(
         @Schema(description = "Unique identifier", example = "1") Long id,
         @NotBlank @Schema(description = "Artist name", example = "Queen") String name,
         @Valid @Schema(description = "Songs by this artist") List<SongDtoSimple> songs,
+        @Schema(description = "Artist image URL") String imageUrl,
         @Schema(description = "Artist biography") String description
 ) implements Serializable {}

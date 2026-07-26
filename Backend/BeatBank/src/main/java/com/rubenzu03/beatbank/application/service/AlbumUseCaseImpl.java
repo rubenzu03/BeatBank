@@ -93,4 +93,13 @@ public class AlbumUseCaseImpl implements AlbumUseCase {
         }
         albumRepository.deleteById(id);
     }
+
+    @Override
+    public AlbumDto updateAlbumCover(Long id, String coverImageUrl) {
+        Album album = albumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Album", id));
+        album.setCoverImageUrl(coverImageUrl);
+        albumRepository.save(album);
+        return mapper.toAlbumDto(album);
+    }
 }

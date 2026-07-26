@@ -214,6 +214,28 @@ class AlbumUseCaseImplTest {
     }
 
     @Test
+    void updateAlbumCover_WhenExists_ShouldUpdate() {
+        Album existing = createAlbum(1L, "Album", null);
+        when(albumRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(albumRepository.save(existing)).thenReturn(existing);
+        when(mapper.toAlbumDto(existing)).thenReturn(createAlbumDto(1L, "Album", null));
+
+        AlbumDto result = albumUseCase.updateAlbumCover(1L, "http://new-cover.jpg");
+
+        assertThat(result).isNotNull();
+        assertThat(existing.getCoverImageUrl()).isEqualTo("http://new-cover.jpg");
+    }
+
+    @Test
+    void updateAlbumCover_WhenNotExists_ShouldThrow() {
+        when(albumRepository.findById(1L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> albumUseCase.updateAlbumCover(1L, "http://img.jpg"))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Album");
+    }
+
+    @Test
     void deleteAlbumById_WhenExists_ShouldDelete() {
         when(albumRepository.existsById(1L)).thenReturn(true);
 

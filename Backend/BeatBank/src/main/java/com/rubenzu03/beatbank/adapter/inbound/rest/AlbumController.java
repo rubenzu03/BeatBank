@@ -2,9 +2,11 @@ package com.rubenzu03.beatbank.adapter.inbound.rest;
 
 import com.rubenzu03.beatbank.application.dto.AlbumDto;
 import com.rubenzu03.beatbank.application.dto.AlbumPatchDto;
+import com.rubenzu03.beatbank.application.dto.CoverUpdateDto;
 import com.rubenzu03.beatbank.application.dto.PagedResponse;
 import com.rubenzu03.beatbank.application.dto.SongDto;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
+import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,9 +25,11 @@ import org.springframework.web.bind.annotation.*;
 public class AlbumController {
 
     private final AlbumUseCase albumUseCase;
+    private final SongUseCase songUseCase;
 
-    public AlbumController(AlbumUseCase albumUseCase) {
+    public AlbumController(AlbumUseCase albumUseCase, SongUseCase songUseCase) {
         this.albumUseCase = albumUseCase;
+        this.songUseCase = songUseCase;
     }
 
     @GetMapping
@@ -44,6 +48,15 @@ public class AlbumController {
     @ResponseStatus(HttpStatus.OK)
     public AlbumDto getAlbumById(@PathVariable @Parameter(description = "Album ID") Long id) {
         return albumUseCase.getAlbumById(id);
+    }
+
+    @GetMapping("/{id}/songs")
+    @Operation(summary = "Get album songs", description = "Returns a paginated list of songs for an album")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved songs")
+    @ResponseStatus(HttpStatus.OK)
+    public PagedResponse<SongDto> getAlbumSongs(@PathVariable Long id,
+                                                 @Parameter(description = "Pagination parameters") @PageableDefault(size = 20) Pageable pageable) {
+        return new PagedResponse<>(songUseCase.getSongsByAlbum(id, pageable));
     }
 
     @Transactional
@@ -83,6 +96,16 @@ public class AlbumController {
     @ResponseStatus(HttpStatus.OK)
     public AlbumDto patchAlbum(@PathVariable Long id, @RequestBody AlbumPatchDto patch) {
         return albumUseCase.patchAlbum(id, patch);
+    }
+
+    @Transactional
+    @PatchMapping("/{id}/cover")
+    @Operation(summary = "Update album cover", description = "Updates only the cover image URL of an album")
+    @ApiResponse(responseCode = "200", description = "Successfully updated cover")
+    @ApiResponse(responseCode = "404", description = "Album not found")
+    @ResponseStatus(HttpStatus.OK)
+    public AlbumDto updateAlbumCover(@PathVariable Long id, @RequestBody CoverUpdateDto cover) {
+        return albumUseCase.updateAlbumCover(id, cover.coverImageUrl());
     }
 
     @Transactional

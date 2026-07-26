@@ -4,6 +4,7 @@ import com.rubenzu03.beatbank.application.dto.*;
 import com.rubenzu03.beatbank.application.exception.GlobalExceptionHandler;
 import com.rubenzu03.beatbank.application.exception.ResourceNotFoundException;
 import com.rubenzu03.beatbank.application.port.inbound.AlbumUseCase;
+import com.rubenzu03.beatbank.application.port.inbound.SongUseCase;
 import com.rubenzu03.beatbank.adapter.inbound.rest.AlbumController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,9 +34,12 @@ class AlbumControllerTest {
     @Mock
     private AlbumUseCase albumUseCase;
 
+    @Mock
+    private SongUseCase songUseCase;
+
     @BeforeEach
     void setUp() {
-        AlbumController controller = new AlbumController(albumUseCase);
+        AlbumController controller = new AlbumController(albumUseCase, songUseCase);
         mockMvc = standaloneSetup(controller)
                 .setControllerAdvice(new GlobalExceptionHandler())
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
@@ -134,6 +138,19 @@ class AlbumControllerTest {
                         .content("{\"name\":\"Patched\",\"coverImageUrl\":\"http://img.jpg\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Patched"));
+    }
+
+    @Test
+    void updateAlbumCover_ShouldReturn200() throws Exception {
+        when(albumUseCase.updateAlbumCover(eq(1L), any(String.class))).thenReturn(
+                new AlbumDto(1L, "Album", null, "http://new-cover.jpg", null, null, null)
+        );
+
+        mockMvc.perform(patch("/api/albums/1/cover")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"coverImageUrl\":\"http://new-cover.jpg\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.coverImageUrl").value("http://new-cover.jpg"));
     }
 
     @Test

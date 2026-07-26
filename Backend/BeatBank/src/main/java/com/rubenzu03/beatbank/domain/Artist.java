@@ -17,13 +17,15 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String imageUrl;
     private String description;
 
     @ManyToMany(mappedBy = "artists")
     private List<Song> songs;
 
-    public Artist(String name, String description) {
+    public Artist(String name, String imageUrl, String description) {
         this.name = name;
+        this.imageUrl = imageUrl;
         this.description = description;
     }
 

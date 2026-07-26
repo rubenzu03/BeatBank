@@ -101,6 +101,11 @@ public class SongUseCaseImpl implements SongUseCase {
     }
 
     @Override
+    public Page<SongDto> getSongsByAlbum(Long albumId, Pageable pageable) {
+        return songRepository.findByAlbum_Id(albumId, pageable).map(mapper::toSongDto);
+    }
+
+    @Override
     public SongDto incrementPlays(Long id) {
         Song song = songRepository.findSongById(id);
         if (song == null) {

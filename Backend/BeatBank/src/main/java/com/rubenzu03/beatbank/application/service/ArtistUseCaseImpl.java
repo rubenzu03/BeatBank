@@ -36,7 +36,7 @@ public class ArtistUseCaseImpl implements ArtistUseCase {
 
     @Override
     public ArtistDto createArtist(ArtistDto artistDto){
-        Artist artist = new Artist(artistDto.name(), artistDto.description());
+        Artist artist = new Artist(artistDto.name(), artistDto.imageUrl(), artistDto.description());
         artistRepository.save(artist);
         return mapper.toArtistDto(artist);
     }
@@ -46,6 +46,7 @@ public class ArtistUseCaseImpl implements ArtistUseCase {
         Artist artist = artistRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Artist", id));
         if (patch.name() != null) artist.setName(patch.name());
+        if (patch.imageUrl() != null) artist.setImageUrl(patch.imageUrl());
         if (patch.description() != null) artist.setDescription(patch.description());
         artistRepository.save(artist);
         return mapper.toArtistDto(artist);

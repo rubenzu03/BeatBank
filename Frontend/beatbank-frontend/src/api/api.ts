@@ -26,6 +26,7 @@ interface ArtistDto {
   id: number
   name: string
   songs: SongDtoSimple[]
+  imageUrl: string
   description: string
 }
 
@@ -99,8 +100,11 @@ const api = {
 }
 
 const songs = {
-  getAll: (page = 0, size = 20) =>
-    api.get<PagedResponse<SongDto>>(`/api/songs?page=${page}&size=${size}`),
+  getAll: (page = 0, size = 20, sort?: string) => {
+    let url = `/api/songs?page=${page}&size=${size}`
+    if (sort) url += `&sort=${sort}`
+    return api.get<PagedResponse<SongDto>>(url)
+  },
   getById: (id: number) =>
     api.get<SongDto>(`/api/songs/${id}`),
   search: (q: string, page = 0, size = 20) =>
@@ -125,7 +129,7 @@ const artists = {
     getAll: (page = 0, size = 20) =>
         api.get<PagedResponse<ArtistDtoSimple>>(`/api/artists?page=${page}&size=${size}`),
     getById: (id: number) =>
-        api.get<ArtistDtoSimple>(`/api/artists/${id}`),
+        api.get<ArtistDto>(`/api/artists/${id}`),
     create: (artist: ArtistDto) =>
         api.post<ArtistDto>('/api/artists', artist),
     patch: (id: number, data: Partial<ArtistDto>) =>
@@ -135,8 +139,11 @@ const artists = {
 }
 
 const albums = {
-  getAll: (page = 0, size = 20) =>
-    api.get<PagedResponse<AlbumDto>>(`/api/albums?page=${page}&size=${size}`),
+  getAll: (page = 0, size = 20, sort?: string) => {
+    let url = `/api/albums?page=${page}&size=${size}`
+    if (sort) url += `&sort=${sort}`
+    return api.get<PagedResponse<AlbumDto>>(url)
+  },
   getById: (id: number) =>
     api.get<AlbumDto>(`/api/albums/${id}`),
   create: (album: AlbumDto) =>
@@ -147,6 +154,8 @@ const albums = {
     api.delete<void>(`/api/albums/${id}`),
   addSong: (albumId: number, songDto: SongDto) =>
     api.post<SongDto>(`/api/albums/${albumId}/songs`, songDto),
+  getSongs: (id: number, page = 0, size = 20) =>
+    api.get<PagedResponse<SongDto>>(`/api/albums/${id}/songs?page=${page}&size=${size}`),
   patch: (id: number, data: Partial<AlbumDto>) =>
     api.patch<AlbumPatchDto>(`/api/albums/${id}`, data),
 }

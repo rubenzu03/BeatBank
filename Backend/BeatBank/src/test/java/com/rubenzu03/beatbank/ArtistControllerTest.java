@@ -45,7 +45,7 @@ class ArtistControllerTest {
     @Test
     void getAllArtists_ShouldReturnPagedResponse() throws Exception {
         Page<ArtistDto> page = new PageImpl<>(List.of(
-                new ArtistDto(1L, "Queen", null, "Rock band")
+                new ArtistDto(1L, "Queen", null, null, "Rock band")
         ));
         when(artistUseCase.getAllArtists(any(Pageable.class))).thenReturn(page);
 
@@ -58,7 +58,7 @@ class ArtistControllerTest {
     @Test
     void getArtistById_WhenExists_ShouldReturnArtist() throws Exception {
         when(artistUseCase.getArtistById(1L)).thenReturn(
-                new ArtistDto(1L, "Queen", null, "Rock band")
+                new ArtistDto(1L, "Queen", null, null, "Rock band")
         );
 
         mockMvc.perform(get("/api/artists/1"))
@@ -79,7 +79,7 @@ class ArtistControllerTest {
     @Test
     void createArtist_ShouldReturn201() throws Exception {
         when(artistUseCase.createArtist(any(ArtistDto.class))).thenReturn(
-                new ArtistDto(1L, "Queen", null, "Rock band")
+                new ArtistDto(1L, "Queen", null, null, "Rock band")
         );
 
         mockMvc.perform(post("/api/artists")
@@ -101,7 +101,7 @@ class ArtistControllerTest {
     @Test
     void patchArtist_ShouldReturn200() throws Exception {
         when(artistUseCase.patchArtist(eq(1L), any(ArtistPatchDto.class))).thenReturn(
-                new ArtistDto(1L, "Updated Name", null, "New desc")
+                new ArtistDto(1L, "Updated Name", null, null, "New desc")
         );
 
         mockMvc.perform(patch("/api/artists/1")
