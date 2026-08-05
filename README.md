@@ -58,7 +58,7 @@ The backend follows a **hexagonal (ports & adapters) architecture**, keeping the
 | Frontend   | Vue 3, TypeScript, Vite, Vue Router, Tailwind CSS 4                      |
 | Tooling    | Maven, pnpm, JaCoCo                                                     |
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -76,7 +76,7 @@ cd Backend/BeatBank
 
 The API is then available at **<http://localhost:8080>** and Swagger UI at **<http://localhost:8080/swagger-ui.html>**.
 
-> 💡 By default the app boots with an in-memory H2 database seeded via `data.sql`. To use MySQL, point `spring.datasource.url`, `username` and `password` in `src/main/resources/application.properties`.
+> By default the app boots with an in-memory H2 database seeded via `data.sql`. To use MySQL, point `spring.datasource.url`, `username` and `password` in `src/main/resources/application.properties`.
 
 ### 2. Frontend (Vue 3)
 
