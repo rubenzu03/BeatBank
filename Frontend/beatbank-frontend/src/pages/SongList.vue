@@ -52,7 +52,7 @@ onMounted(() => fetchSongs(0))
       <p class="text-red-400 mb-4">{{ error }}</p>
       <button
         class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600 text-white cursor-pointer"
-        @click="fetchSongs"
+        @click="() => fetchSongs()"
       >
         Retry
       </button>

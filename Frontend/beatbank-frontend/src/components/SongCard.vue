@@ -22,8 +22,6 @@ function formatDuration(duration: string): string {
 const coverSrc = computed(() => {
   return props.song.album?.coverImageUrl || null
 })
-
-const hasNoCover = computed(() => !coverSrc.value)
 </script>
 
 <template>
