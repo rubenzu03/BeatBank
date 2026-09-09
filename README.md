@@ -17,6 +17,11 @@
 <img src="https://img.shields.io/badge/Vue%20Router-42b883?logo=vuedotjs&logoColor=white"></img>
 <img src="https://img.shields.io/badge/License-MIT-green"></img>
 
+<img width="1728" height="908" alt="Captura de pantalla 2026-09-10 a las 1 00 34" src="https://github.com/user-attachments/assets/83301a7a-86ef-4b74-b646-8adcab24847f" />
+<img width="1728" height="908" alt="Captura de pantalla 2026-09-10 a las 1 00 50" src="https://github.com/user-attachments/assets/d563333f-3266-44b5-82d1-e68fa11cbf04" />
+<img width="1728" height="908" alt="Captura de pantalla 2026-09-10 a las 1 00 59" src="https://github.com/user-attachments/assets/5e177497-c18e-430e-a39e-bcdaea48d86a" />
+
+
 </div>
 
 ## About
